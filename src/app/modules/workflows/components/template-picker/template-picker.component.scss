@@ -123,7 +123,7 @@
 .tp__option-key {
   flex-shrink: 0;
   font-size: 11px;
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-family: var(--ds-mono);
   color: var(--text-muted, var(--ds-text-placeholder));
 }
 

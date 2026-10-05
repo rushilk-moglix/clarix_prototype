@@ -492,7 +492,7 @@
 
 .status-k { font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--text-muted); margin-left: 6px; }
 .status-why { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 6px; font-size: 12.5px; color: var(--text-muted);
-  .mono { font-family: ui-monospace, monospace; font-size: 11.5px; } }
+  .mono { font-family: var(--ds-mono); font-size: 11.5px; } }
 
 /* ── Call page: one screen tall. Header line, then player and transcript beside tabs ── */
 .cd { max-width: 1600px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
@@ -504,11 +504,11 @@
 .cd-head { display: flex; align-items: center; gap: 12px 24px; flex-wrap: wrap; }
 .cd-who { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; min-width: 0; }
 .cd-who h1 { margin: 0; font-size: 1.25rem; font-weight: 700; color: var(--text-color); }
-.cd-sub { font-size: 0.78rem; color: var(--text-muted); font-family: ui-monospace, monospace; }
+.cd-sub { font-size: 0.78rem; color: var(--text-muted); font-family: var(--ds-mono); }
 .cd-st { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
 .cd-facts { display: flex; gap: 20px; margin: 0 0 0 auto; flex-wrap: wrap; }
 .cd-facts div { display: grid; gap: 1px; }
-.cd-facts dt { font-size: 0.68rem; color: var(--text-muted); display: inline-flex; align-items: center; }
+.cd-facts dt { font-size: 11px; color: var(--text-muted); display: inline-flex; align-items: center; }
 .cd-facts dd { margin: 0; font-size: 0.85rem; font-weight: 600; color: var(--text-color); text-transform: capitalize; }
 .cd-main { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(320px, 1fr); gap: 12px; align-items: start; }
 .cd-convo { display: flex; flex-direction: column; overflow: hidden; padding: 0; }
@@ -529,7 +529,7 @@
 .tx { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 10px; text-align: left; white-space: normal; min-width: 0; width: 100%; border: 0; background: transparent; padding: 6px 8px; border-radius: 8px; cursor: pointer; font: inherit; color: var(--text-color);
   &:hover { background: var(--hover-bg); }
 }
-.tx-meta { display: grid; gap: 1px; font-size: 0.7rem; color: var(--text-muted); font-family: ui-monospace, monospace;
+.tx-meta { display: grid; gap: 1px; font-size: 0.7rem; color: var(--text-muted); font-family: var(--ds-mono);
   b { font-family: inherit; font-weight: 600; font-size: 0.74rem; color: var(--ds-accent-fg); text-transform: capitalize; }
 }
 .tx-caller .tx-meta b { color: var(--ds-warning-fg); }
@@ -560,7 +560,7 @@
 .cd-none { padding: 14px; margin: 0; }
 .cd-dials { list-style: none; margin: 0; padding: 4px 12px; }
 .cd-dials li { display: grid; grid-template-columns: 22px minmax(0, 1fr) auto; gap: 8px; align-items: start; padding: 9px 0; border-bottom: 1px solid var(--border-color); font-size: 0.8rem; }
-.d-n { width: 20px; height: 20px; border-radius: 50%; background: var(--bg-tertiary); display: grid; place-items: center; font-size: 0.68rem; color: var(--text-muted); }
+.d-n { width: 20px; height: 20px; border-radius: 50%; background: var(--bg-tertiary); display: grid; place-items: center; font-size: 11px; color: var(--text-muted); }
 .d-body { display: grid; gap: 3px; min-width: 0; }
 .d-top { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
 .outcome-pill.sm { font-size: 11px; padding: 2px 8px; }

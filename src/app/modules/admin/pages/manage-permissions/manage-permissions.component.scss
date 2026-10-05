@@ -1,3 +1,4 @@
+@use '../../../../../styles/ds' as ds;
 .admin-page {
   @apply w-full max-w-screen-2xl mx-auto space-y-6 px-4 py-6;
 }
@@ -18,29 +19,22 @@
   @apply flex items-center gap-3;
 }
 
-.create-btn {
-  @apply inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white
-         px-4 py-2 rounded-lg font-medium transition-colors;
-}
+.create-btn { @include ds.btn(primary); }
 
 /* Tabs */
-.tabs {
-  @apply flex items-center gap-2 border-b border-gray-200 dark:border-gray-700;
-}
+.tabs { display: flex; align-items: center; gap: 4px; border-bottom: 1px solid var(--ds-border); }
 
 .tab {
-  @apply inline-flex items-center gap-2 px-4 py-2 text-sm font-medium
-         text-gray-600 dark:text-gray-400 border-b-2 border-transparent
-         hover:text-gray-900 dark:hover:text-white transition-colors;
+  display: inline-flex; align-items: center; gap: 8px; padding: 0 12px; min-height: 40px; font-size: 13px; font-weight: 550;
+  color: var(--ds-text-muted); background: none; border: 0; border-bottom: 2px solid transparent; margin-bottom: -1px; cursor: pointer;
+  transition: color 0.12s ease, border-color 0.15s var(--ds-ease);
+  &:hover { color: var(--ds-text); border-bottom-color: var(--ds-border-strong); }
+  &:focus-visible { outline: 2px solid var(--ds-focus); outline-offset: 2px; }
 }
-
-.tab.active {
-  @apply text-blue-600 dark:text-blue-300 border-blue-600 dark:border-blue-400;
-}
-
+.tab.active { color: var(--ds-text); border-bottom-color: var(--ds-text); }
 .tab-count {
-  @apply ml-1 inline-flex items-center justify-center min-w-[1.5rem] px-1.5 h-5
-         rounded-full bg-gray-100 dark:bg-gray-700 text-xs text-gray-700 dark:text-gray-200;
+  display: inline-flex; align-items: center; justify-content: center; min-width: 22px; height: 18px; padding: 0 6px; border-radius: var(--ds-r-sm);
+  background: var(--ds-surface-sunken); color: var(--ds-text-2); font-family: var(--ds-mono); font-size: 11px; font-variant-numeric: tabular-nums;
 }
 
 /* Banner */
@@ -134,14 +128,10 @@
 }
 
 .key-chip {
-  @apply inline-block px-2 py-0.5 rounded bg-gray-100 dark:bg-gray-700
-         text-xs font-mono text-gray-800 dark:text-gray-200;
+  display: inline-block; padding: 1px 6px; border-radius: var(--ds-r-xs); background: var(--ds-surface-sunken); border: 1px solid var(--ds-border);
+  font-family: var(--ds-mono); font-size: 11px; color: var(--ds-text-2);
 }
-
-.category-chip {
-  @apply inline-block px-2 py-0.5 rounded-full text-xs font-medium
-         bg-blue-50 text-blue-700 dark:bg-blue-900/40 dark:text-blue-200;
-}
+.category-chip { @include ds.badge(info, false); }
 
 .permission-list {
   @apply flex flex-wrap gap-1.5;

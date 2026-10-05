@@ -339,6 +339,6 @@
 .cd-st { display: inline-flex; align-items: center; gap: 6px; padding: 5px 11px; border-radius: 999px; border: 1px solid var(--border-color); background: var(--bg-primary); color: var(--text-muted); font-size: 12.5px; cursor: pointer;
   b { color: var(--text-color); } &:hover { border-color: var(--text-muted); }
   &.on { background: var(--text-color); border-color: var(--text-color); color: var(--bg-primary); b { color: var(--bg-primary); } } }
-.cd-oz { font-family: ui-monospace, monospace; font-size: 10.5px; color: var(--text-muted); margin-top: 2px; }
+.cd-oz { font-family: var(--ds-mono); font-size: 10.5px; color: var(--text-muted); margin-top: 2px; }
 
 .cd-nowrap { white-space: nowrap; }

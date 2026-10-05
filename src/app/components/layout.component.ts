@@ -8,6 +8,7 @@ import { ThemeService } from '../services/theme.service';
 import { ToastContainerComponent } from '../core/notifications/toast-container/toast-container.component';
 import { SideNavComponent } from './top-nav/side-nav/side-nav.component';
 import { navFor } from './top-nav/app-modules';
+import { installDialogKeys } from '../core/a11y/dialog-keys';
 
 const PIN_KEY = 'clarix.sidebar.pinned';
 
@@ -34,6 +35,8 @@ export class LayoutComponent {
 
   constructor() {
     effect(() => { try { localStorage.setItem(PIN_KEY, this.pinned() ? '1' : '0'); } catch { /* private mode */ } });
+    // Every dialog: focus moves in and stays, Esc closes, focus returns.
+    installDialogKeys('[role="dialog"]', '[class*="backdrop"], [class*="overlay"]');
   }
   protected toggleTheme(): void { this.themeService.setColorScheme(this.isDark() ? 'light' : 'dark'); }
   private readPin(): boolean { try { return localStorage.getItem(PIN_KEY) === '1'; } catch { return false; } }

@@ -34,7 +34,7 @@
   align-items: center;
   gap: 6px;
   padding: 5px 10px;
-  background: rgba(16, 185, 129, 0.1);
+  background: var(--ds-success-bg);
   color: var(--ds-success-fg);
   border-radius: 20px;
   font-size: 12px;
@@ -247,8 +247,8 @@
   font-size: 12px;
   font-weight: 600;
 
-  &--up   { background: rgba(16, 185, 129, 0.12); color: var(--ds-success-fg); }
-  &--down { background: rgba(239, 68, 68, 0.12);  color: var(--ds-danger-fg); }
+  &--up   { background: var(--ds-success-bg); color: var(--ds-success-fg); }
+  &--down { background: var(--ds-danger-bg);  color: var(--ds-danger-fg); }
 }
 
 .trend-up   { color: var(--ds-success-fg); }
@@ -352,7 +352,7 @@
 }
 
 .bar-label {
-  font-size: 10px;
+  font-size: 11px;
   color: var(--text-muted, var(--ds-text-placeholder));
   white-space: nowrap;
   text-align: center;

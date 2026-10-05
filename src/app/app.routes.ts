@@ -5,15 +5,6 @@ import { permissionGuard } from './core/permissions/guards/permission.guard';
 import { ManagePermissionsComponent } from './modules/admin/pages/manage-permissions/manage-permissions.component';
 import { DashboardLayoutComponent } from './modules/dashboard/components/dashboard-layout/dashboard-layout.component';
 import { DashboardOverviewComponent } from './modules/dashboard/pages/dashboard-overview/dashboard-overview.component';
-import { GenbiLayoutComponent } from './modules/genbi/genbi-layout.component';
-import { GenbiAnalyticsComponent } from './modules/genbi/pages/genbi-analytics.component';
-import { GenbiOverviewComponent } from './modules/genbi/pages/genbi-overview.component';
-import { OrgDetailComponent } from './modules/genbi/pages/org-detail/org-detail.component';
-import { OrgListComponent } from './modules/genbi/pages/org-list/org-list.component';
-import { SchemaEditorComponent } from './modules/genbi/pages/schema-editor/schema-editor.component';
-import { SchemaListComponent } from './modules/genbi/pages/schema-list/schema-list.component';
-import { SchemaUploadComponent } from './modules/genbi/pages/schema-upload.component';
-import { SchemaValidationComponent } from './modules/genbi/pages/schema-validation.component';
 import { WorkflowExecutionDetailComponent } from './modules/workflows/pages/workflow-execution-detail/workflow-execution-detail.component';
 import { WorkflowExecutionsComponent } from './modules/workflows/pages/workflow-executions/workflow-executions.component';
 import { WorkflowTemplatesComponent } from './modules/workflows/pages/workflow-templates.component';
@@ -154,50 +145,8 @@ export const routes: Routes = [
         redirectTo: '/workflows/build/data',
         pathMatch: 'full'
       },
-      {
-        path: 'genbi',
-        component: GenbiLayoutComponent,
-        canActivate: [permissionGuard('genbi:menuvisibility')],
-        children: [
-          {
-            path: '',
-            redirectTo: 'overview',
-            pathMatch: 'full'
-          },
-          {
-            path: 'overview',
-            component: GenbiOverviewComponent
-          },
-          {
-            path: 'schemas',
-            component: SchemaListComponent
-          },
-          {
-            path: 'schemas/:id/edit',
-            component: SchemaEditorComponent
-          },
-          {
-            path: 'upload',
-            component: SchemaUploadComponent
-          },
-          {
-            path: 'validation',
-            component: SchemaValidationComponent
-          },
-          {
-            path: 'analytics',
-            component: GenbiAnalyticsComponent
-          },
-          {
-            path: 'org',
-            component: OrgListComponent
-          },
-          {
-            path: 'org/:id',
-            component: OrgDetailComponent
-          }
-        ]
-      },
+      // GenBI is no longer part of Clarix; old links land on the dashboard.
+      { path: 'genbi', redirectTo: '/dashboard/overview', pathMatch: 'prefix' },
       {
         // Operators start in Run (CLX-064): the call centre dashboard is not the home page.
         path: '',

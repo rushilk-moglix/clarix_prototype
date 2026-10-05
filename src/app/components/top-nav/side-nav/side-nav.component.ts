@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, model, resource, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, model, resource, signal, effect } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { LucideAngularModule } from 'lucide-angular';
 import { firstValueFrom } from 'rxjs';
@@ -33,6 +33,14 @@ export class SideNavComponent {
   private suppress = false;
   private timer: ReturnType<typeof setTimeout> | undefined;
   protected readonly open = computed(() => this.pinned() || this.hovered() || this.drawer());
+
+  constructor() {
+    // Phone drawer: focus the current page link when it opens, so keyboard and screen reader users land inside it.
+    effect(() => {
+      if (!this.drawer()) return;
+      setTimeout(() => (document.querySelector<HTMLElement>('.sn.drawer .sn-link.active') || document.querySelector<HTMLElement>('.sn.drawer .sn-link'))?.focus(), 60);
+    });
+  }
 
   protected readonly groups = computed(() =>
     NAV_GROUPS.map((g) => ({ label: g.label, items: g.items.filter((i) => this.allowed(i)) })).filter((g) => g.items.length)

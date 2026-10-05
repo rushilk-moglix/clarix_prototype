@@ -6,7 +6,8 @@
   display: flex; flex-direction: column; background: var(--sn-bg); color: var(--sn-ink); border-right: 1px solid var(--border-color);
   transition: width 0.2s cubic-bezier(0.2, 0.7, 0.1, 1), box-shadow 0.2s;
   &.open { width: var(--sn-w-open); box-shadow: 20px 0 50px -24px rgba(12, 10, 9, 0.28); }
-  > * { position: relative; }
+  // The handle is positioned on the edge; everything else stays in flow.
+  > *:not(.sn-handle) { position: relative; }
 }
 :host-context(.sn-pinned) .sn.open { box-shadow: none; }
 .sn-txt { opacity: 0; white-space: nowrap; pointer-events: none; transition: opacity 0.12s; }

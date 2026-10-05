@@ -1,12 +1,12 @@
 <div class="ol-page">
   <div class="ol-toolbar">
-    <select class="ol-input" [ngModel]="activeId()" (ngModelChange)="selectDefinition($event)">
+    <select class="ol-input" aria-label="Orchestration" [ngModel]="activeId()" (ngModelChange)="selectDefinition($event)">
       @for (d of definitions(); track d.id) {
         <option [value]="d.id">{{ d.name }}</option>
       }
     </select>
     <button type="button" class="ol-btn ol-btn-secondary" (click)="newDefinition()">New orchestration</button>
-    <input class="ol-input ol-name-input" [ngModel]="name()" (ngModelChange)="name.set($event)" placeholder="Orchestration name" />
+    <input class="ol-input ol-name-input" [ngModel]="name()" (ngModelChange)="name.set($event)" placeholder="Orchestration name" aria-label="Orchestration name" />
     <button type="button" class="ol-btn ol-btn-primary" (click)="save()" [disabled]="saving()">
       {{ saving() ? 'Saving…' : 'Save' }}
     </button>
@@ -22,7 +22,7 @@
           <div class="ol-lane-rail">{{ laneIdx + 1 }}</div>
           <div class="ol-lane-body">
             <div class="ol-lane-head">
-              <input class="ol-input" [ngModel]="lane.name" (ngModelChange)="updateLane(laneIdx, { name: $event })" />
+              <input class="ol-input" aria-label="Lane name" [ngModel]="lane.name" (ngModelChange)="updateLane(laneIdx, { name: $event })" />
               <button type="button" class="ol-icon-btn" (click)="removeLane(laneIdx)">Remove lane</button>
             </div>
 
@@ -33,12 +33,12 @@
                   <div class="ol-rule">
                     <input class="ol-input ol-rule-field" [ngModel]="rule.field"
                       (ngModelChange)="updateRule(laneIdx, ri, { field: $event })" placeholder="Column" />
-                    <select class="ol-input" [ngModel]="rule.operator" (ngModelChange)="updateRule(laneIdx, ri, { operator: $event })">
+                    <select class="ol-input" aria-label="Rule operator" [ngModel]="rule.operator" (ngModelChange)="updateRule(laneIdx, ri, { operator: $event })">
                       @for (op of operators; track op) {
                         <option [value]="op">{{ op }}</option>
                       }
                     </select>
-                    <input class="ol-input" [ngModel]="rule.value" (ngModelChange)="updateRule(laneIdx, ri, { value: $event })" placeholder="Value" />
+                    <input class="ol-input" [ngModel]="rule.value" (ngModelChange)="updateRule(laneIdx, ri, { value: $event })" placeholder="Value" aria-label="Rule value" />
                     <button type="button" class="ol-icon-btn" (click)="removeRule(laneIdx, ri)">&times;</button>
                   </div>
                 }
@@ -75,7 +75,7 @@
       <div class="ol-block">
         <div class="ol-block-head">Preview matching</div>
         <p class="ol-block-hint">Paste a comma-separated header row to see how well each lane's agent inputs would be matched.</p>
-        <textarea class="ol-textarea" rows="3" [ngModel]="previewHeaders()" (ngModelChange)="previewHeaders.set($event)"
+        <textarea class="ol-textarea" rows="3" aria-label="Sample column headers" [ngModel]="previewHeaders()" (ngModelChange)="previewHeaders.set($event)"
           placeholder="Vendor Code, Vendor Name, Plant, PO Number, ..."></textarea>
         <button type="button" class="ol-btn ol-btn-secondary" (click)="runPreview()" [disabled]="previewing() || !activeId()">
           {{ previewing() ? 'Checking…' : 'Preview matching' }}

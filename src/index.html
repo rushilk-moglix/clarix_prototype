@@ -22,6 +22,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Theme before first paint (also on the sign in page): no white flash for dark mode users. -->
+    <script>try{var c=(JSON.parse(localStorage.getItem('clarix-theme-config')||'{}').colorScheme)||'system';var d=c==='dark'||(c==='system'&&matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.classList.add(d?'dark':'light')}catch(e){}</script>
+    <style>html{background:#fff}html.dark{background:#000}</style>
 </head>
 
 <body>

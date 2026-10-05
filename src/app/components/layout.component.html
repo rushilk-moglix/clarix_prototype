@@ -2,27 +2,24 @@
   <app-side-nav [(pinned)]="pinned" [(drawer)]="drawer"></app-side-nav>
 
   <div class="main-wrapper">
-    <!-- Header: where you are, the page's tabs if it has any, and two tools. Flat, no pill. -->
-    <header class="hd">
-      <button type="button" class="hd-icon hd-menu" (click)="drawer.set(true)" aria-label="Open menu"><lucide-icon name="menu" [size]="18"></lucide-icon></button>
-      <div class="hd-where">
-        @if (here(); as h) {
-          <span class="hd-eyebrow"><i></i>{{ h.group }}</span>
-          <span class="hd-title">{{ h.label }}</span>
-        }
-      </div>
-      @if (tabs().length > 1) {
-        <nav class="hd-tabs" aria-label="Pages">
-          @for (t of tabs(); track t.route) {
-            <a class="hd-tab" [routerLink]="t.route" routerLinkActive="active">{{ t.label }}</a>
-          }
-        </nav>
-      }
-      <span class="hd-space"></span>
+    <!-- Phones only: the side bar is a drawer, so a slim bar holds the menu button and the page name.
+         On larger screens there is no header: each page shows its own title, the side bar shows where you are. -->
+    <header class="tb">
+      <button type="button" class="tb-menu" (click)="drawer.set(true)" aria-label="Open menu" [attr.aria-expanded]="drawer()"><lucide-icon name="menu" [size]="18"></lucide-icon></button>
+      <img class="tb-mark" src="favicon.svg" alt="" width="26" height="26" />
+      <span class="tb-title">{{ here()?.label ?? 'Clarix' }}</span>
     </header>
 
     <main class="main-content">
       <div class="content-container">
+        @if (tabs().length > 1) {
+          <!-- Sections with several pages keep their page tabs, above the page. -->
+          <nav class="sub-tabs" [attr.aria-label]="(here()?.group ?? 'Section') + ' pages'">
+            @for (t of tabs(); track t.route) {
+              <a class="sub-tab" [routerLink]="t.route" routerLinkActive="active" ariaCurrentWhenActive="page">{{ t.label }}</a>
+            }
+          </nav>
+        }
         <router-outlet></router-outlet>
       </div>
     </main>

@@ -394,10 +394,31 @@ body { background: var(--ds-bg); color: var(--ds-text); font-family: var(--ds-fo
 .rounded-xl, .rounded-2xl { border-radius: var(--ds-r-lg) !important; }
 .empty-title { color: var(--ds-text); font-weight: 600; }
 @keyframes dsLift { from { opacity: 0; transform: translateY(4px) scale(.985); } to { opacity: 1; transform: none; } }
-[role="dialog"], .modal, .modal-content { animation: dsLift .18s var(--ds-ease) both; }
+/* Dialogs fade in. Opacity only: many dialogs are centred with a transform, which an entry transform would override. */
+@keyframes dsFade { from { opacity: 0; } to { opacity: 1; } }
+[role="dialog"], .modal, .modal-content { animation: dsFade .16s ease both; }
 /* Accent text utilities: the deep violet is for light pages; on black they use the lighter accent text. */
 .dark .text-primary-600, .dark .text-primary-700, .dark .text-indigo-600, .dark .text-indigo-700, .dark .text-blue-600, .dark .text-blue-700 { color: var(--ds-accent-fg) !important; }
 .dark .bg-blue-600, .dark .bg-indigo-600, .dark .bg-primary-600 { background-color: var(--ds-accent) !important; }
 .bg-blue-600, .bg-indigo-600 { background-color: var(--ds-accent); }
 .hover\:bg-blue-700:hover { background-color: var(--ds-accent-hover); }
 .text-blue-600 { color: var(--ds-accent-fg); }
+/* Stock Tailwind hues on older screens (GenBI tiles, chips) become the token tints, so colour still means status. */
+.bg-blue-50, .bg-blue-100, .bg-indigo-50, .bg-indigo-100, .bg-purple-50, .bg-purple-100 { background-color: var(--ds-info-bg) !important; }
+.bg-green-50, .bg-green-100, .bg-emerald-50, .bg-emerald-100 { background-color: var(--ds-success-bg) !important; }
+.bg-yellow-50, .bg-yellow-100, .bg-amber-50, .bg-amber-100, .bg-orange-50, .bg-orange-100 { background-color: var(--ds-warning-bg) !important; }
+.bg-red-50, .bg-red-100 { background-color: var(--ds-danger-bg) !important; }
+.bg-blue-500, .bg-indigo-500, .bg-purple-500 { background-color: var(--ds-accent) !important; }
+.bg-green-500, .bg-emerald-500 { background-color: var(--ds-success) !important; }
+.bg-yellow-500, .bg-amber-500, .bg-orange-500 { background-color: var(--ds-warning) !important; }
+.bg-red-500 { background-color: var(--ds-danger) !important; }
+.text-blue-500, .text-blue-600, .text-blue-700, .text-indigo-500, .text-purple-500, .text-purple-600 { color: var(--ds-info-fg) !important; }
+.text-green-500, .text-green-600, .text-green-700, .text-emerald-600 { color: var(--ds-success-fg) !important; }
+.text-yellow-500, .text-yellow-600, .text-yellow-700, .text-amber-600, .text-orange-600 { color: var(--ds-warning-fg) !important; }
+.text-red-500, .text-red-600, .text-red-700 { color: var(--ds-danger-fg) !important; }
+.bg-blue-500 *, .bg-green-500 *, .bg-purple-500 *, .bg-indigo-500 *, .bg-red-500 * { color: #fff; }
+/* Native selects and pager buttons: the same hover edge as inputs. */
+select:not(:disabled) { cursor: pointer; }
+select:not(:disabled):hover { border-color: var(--ds-border-input) !important; }
+.cl-page-btn:not(:disabled):hover { background: var(--ds-hover); color: var(--ds-text); }
+a.view-all-link, button.mt-3.text-sm { display: inline-flex; align-items: center; min-height: 24px; }

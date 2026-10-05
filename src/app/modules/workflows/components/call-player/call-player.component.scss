@@ -18,7 +18,7 @@
   color: var(--text-muted); display: grid; place-items: center; cursor: pointer; text-decoration: none;
   &:hover { background: var(--hover-bg); color: var(--text-color); }
 }
-.pl-speed { width: auto; padding: 0 6px; font-size: 0.72rem; font-weight: 700; font-family: ui-monospace, monospace; }
+.pl-speed { width: auto; padding: 0 6px; font-size: 0.72rem; font-weight: 700; font-family: var(--ds-mono); }
 .pl-wave {
   flex: 1; min-width: 80px; height: 30px; display: flex; align-items: center; gap: 2px; cursor: pointer; touch-action: none; border-radius: 6px;
   &:focus-visible { outline: 2px solid var(--primary-color); outline-offset: 2px; }
@@ -29,5 +29,5 @@
   i.agent.on { background: var(--ds-accent); }
   i.caller.on { background: var(--ds-warning); }
 }
-.pl-time { font-size: 0.72rem; color: var(--text-muted); white-space: nowrap; font-family: ui-monospace, monospace; }
+.pl-time { font-size: 0.72rem; color: var(--text-muted); white-space: nowrap; font-family: var(--ds-mono); }
 @media (max-width: 560px) { .pl { flex-wrap: wrap; } .pl-wave { order: 9; flex-basis: 100%; } }

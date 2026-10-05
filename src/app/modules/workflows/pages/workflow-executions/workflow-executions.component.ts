@@ -16,7 +16,6 @@ import { LucideAngularModule } from 'lucide-angular';
 import { Subject, timeout } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
 import { environment } from '../../../../../environments/environment';
-import { GenbiModalComponent } from '../../../../components/genbi-modal/genbi-modal.component';
 import { WorkflowDashboardComponent } from '../../components/workflow-dashboard/workflow-dashboard.component';
 import {
   SUPPORTED_CHANNELS,
@@ -35,7 +34,6 @@ import { dispatchState, dispatchTraceRef, dispatchTooltip } from '../../utils/di
     CommonModule,
     FormsModule,
     LucideAngularModule,
-    GenbiModalComponent,
     WorkflowDashboardComponent,
     ScheduleExecutionModalComponent,
   ],
@@ -53,17 +51,6 @@ export class WorkflowExecutionsComponent implements OnInit, OnDestroy {
   private readonly confirm = inject(ConfirmDialogService);
   private readonly destroy$ = new Subject<void>();
 
-  protected readonly genbiOpen = signal(false);
-  private readonly genBiBaseUrl = environment.backendServices.genbi.baseURL;
-  private readonly genbiBaseUrl = `${this.genBiBaseUrl}/genbi?collection=workflow_executions`;
-  protected readonly genbiUrl = computed(() => {
-    const id = this.templateId;
-    const metadata = id ? { templateId: id } : undefined;
-    const meta = encodeURIComponent(JSON.stringify(metadata));
-    return id
-      ? `${this.genbiBaseUrl}&metadata=${meta}`
-      : this.genbiBaseUrl;
-  });
 
   protected readonly loading = signal(false);
   protected readonly downloading = signal(false);

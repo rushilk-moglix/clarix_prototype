@@ -11,12 +11,12 @@
       <lucide-icon name="search" [size]="14"></lucide-icon>
       <input
         type="text"
-        placeholder="Search by contact, phone, PO, or supplier…"
+        placeholder="Search by contact, phone, PO, or supplier…" aria-label="Search calls"
         [(ngModel)]="searchTerm"
         (ngModelChange)="onSearchChange()"
       />
     </div>
-    <select class="cl-select" [(ngModel)]="statusFilter" (ngModelChange)="onStatusFilterChange()">
+    <select class="cl-select" aria-label="Filter by call status" [(ngModel)]="statusFilter" (ngModelChange)="onStatusFilterChange()">
       <option value="">All statuses</option>
       @for (s of statusOptions; track s) {
         <option [value]="s">{{ statusWord(s) }}</option>

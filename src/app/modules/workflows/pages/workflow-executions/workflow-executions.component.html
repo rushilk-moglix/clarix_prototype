@@ -325,17 +325,6 @@
 
 </div>
 
-<!-- GenBi FAB -->
-<button class="genbi-fab" (click)="genbiOpen.set(true)" aria-label="Open GenBi analytics">
-  <lucide-icon name="chart-column" [size]="18"></lucide-icon>
-  GenBi
-</button>
-
-<!-- GenBi Modal -->
-@if (genbiOpen()) {
-<app-genbi-modal [url]="genbiUrl()" (closed)="genbiOpen.set(false)"></app-genbi-modal>
-}
-
 <!-- Schedule / reschedule modal -->
 @if (scheduleTarget(); as target) {
 <app-schedule-execution-modal [execution]="target" (changed)="onScheduleChanged()"

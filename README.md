@@ -11,7 +11,7 @@ Microsoft sign in is off in the demo)
 - **Campaigns**: New campaign popup (pick an agent, download its template, upload the sheet), progress by call
   status, campaign page with every call.
 - **Call page**: outcome first: answers, dials, details. Built for business users, not engineers.
-- **Dashboard and reports**: call analytics, execution sheets, call logs.
+- **Dashboard** (first in the side bar) and reports: call analytics, execution sheets, call logs. No page header; each page carries its own title.
 - **Side bar**: hover to open, pin, theme switch (system, light, dark).
 
 ## How the demo works
