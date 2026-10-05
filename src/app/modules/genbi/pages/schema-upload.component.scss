@@ -1,0 +1,274 @@
+.schema-upload-page {
+      @apply max-w-4xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8;
+    }
+
+    .upload-container {
+      @apply lg:col-span-2 space-y-6;
+    }
+
+    /* Header */
+    .upload-header {
+      @apply text-center mb-8;
+    }
+
+    .upload-title {
+      @apply text-2xl font-bold text-gray-900 dark:text-white mb-2;
+    }
+
+    .upload-description {
+      @apply text-gray-600 dark:text-gray-400;
+    }
+
+    /* File Drop Zone */
+    .file-drop-zone {
+      @apply border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg
+             p-8 text-center cursor-pointer hover:border-blue-400 dark:hover:border-blue-500
+             transition-colors bg-gray-50 dark:bg-gray-800/50;
+    }
+
+    .file-drop-zone.dragging {
+      @apply border-blue-500 bg-blue-50 dark:bg-blue-900/20;
+    }
+
+    .drop-content {
+      @apply space-y-4;
+    }
+
+    .drop-icon {
+      @apply flex justify-center;
+    }
+
+    .drop-title {
+      @apply text-lg font-semibold text-gray-900 dark:text-white;
+    }
+
+    .drop-description {
+      @apply text-gray-600 dark:text-gray-400;
+    }
+
+    .link-text {
+      @apply text-blue-600 dark:text-blue-400 hover:underline;
+    }
+
+    .hidden {
+      @apply sr-only;
+    }
+
+    /* Selected File */
+    .selected-file {
+      @apply flex items-center justify-between p-4 bg-blue-50 dark:bg-blue-900/20
+             border border-blue-200 dark:border-blue-800 rounded-lg;
+    }
+
+    .file-info {
+      @apply flex items-center space-x-3;
+    }
+
+    .file-details {
+      @apply text-left;
+    }
+
+    .file-name {
+      @apply font-medium text-gray-900 dark:text-white;
+    }
+
+    .file-size {
+      @apply text-sm text-gray-600 dark:text-gray-400;
+    }
+
+    .remove-file {
+      @apply p-1 rounded-full hover:bg-red-100 dark:hover:bg-red-900/20
+             text-red-600 dark:text-red-400;
+    }
+
+    /* Guidelines */
+    .upload-guidelines {
+      @apply bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700
+             rounded-lg p-6;
+    }
+
+    .guidelines-title {
+      @apply flex items-center space-x-2 font-semibold text-gray-900 dark:text-white mb-3;
+    }
+
+    .guidelines-list {
+      @apply space-y-2 text-sm text-gray-600 dark:text-gray-400;
+    }
+
+    .guidelines-list li {
+      @apply flex items-start;
+    }
+
+    .guidelines-list li:before {
+      content: "•";
+      @apply text-blue-500 font-bold mr-2 mt-0.5;
+    }
+
+    /* Actions */
+    .upload-actions {
+      @apply flex items-center justify-end space-x-3;
+    }
+
+    .cancel-btn {
+      @apply px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg
+             text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800;
+    }
+
+    .upload-btn {
+      @apply flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white
+             px-6 py-2 rounded-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed;
+    }
+
+    /* Upload Progress */
+    .upload-progress {
+      @apply bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700
+             rounded-lg p-8 text-center;
+    }
+
+    .progress-content {
+      @apply space-y-4;
+    }
+
+    .progress-icon {
+      @apply flex justify-center;
+    }
+
+    .spinner {
+      @apply w-12 h-12 border-2 border-blue-200 dark:border-blue-800 border-t-blue-600
+             rounded-full animate-spin;
+    }
+
+    .progress-title {
+      @apply text-lg font-semibold text-gray-900 dark:text-white;
+    }
+
+    .progress-description {
+      @apply text-gray-600 dark:text-gray-400;
+    }
+
+    .progress-bar {
+      @apply w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 overflow-hidden;
+    }
+
+    .progress-fill {
+      @apply h-full bg-blue-600 rounded-full transition-all duration-300;
+    }
+
+    .progress-text {
+      @apply text-sm text-gray-600 dark:text-gray-400;
+    }
+
+    /* Upload Success */
+    .upload-success {
+      @apply bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700
+             rounded-lg p-8 text-center;
+    }
+
+    .success-content {
+      @apply space-y-6;
+    }
+
+    .success-icon {
+      @apply flex justify-center;
+    }
+
+    .success-title {
+      @apply text-lg font-semibold text-gray-900 dark:text-white;
+    }
+
+    .success-description {
+      @apply text-gray-600 dark:text-gray-400;
+    }
+
+    .schema-summary {
+      @apply grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm;
+    }
+
+    .summary-item {
+      @apply flex items-center space-x-2 text-gray-600 dark:text-gray-400;
+    }
+
+    .upload-warnings {
+      @apply bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800
+             rounded-lg p-4 text-left;
+    }
+
+    .warnings-title {
+      @apply flex items-center space-x-2 font-medium text-yellow-800 dark:text-yellow-300 mb-2;
+    }
+
+    .warnings-list {
+      @apply text-sm text-yellow-700 dark:text-yellow-300 space-y-1;
+    }
+
+    .success-actions {
+      @apply flex items-center justify-center space-x-3;
+    }
+
+    .primary-btn {
+      @apply inline-flex items-center space-x-2 bg-blue-600 hover:bg-blue-700
+             text-white px-4 py-2 rounded-lg font-medium;
+    }
+
+    .secondary-btn {
+      @apply px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg
+             text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800;
+    }
+
+    /* Upload Error */
+    .upload-error {
+      @apply bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700
+             rounded-lg p-8 text-center;
+    }
+
+    .error-content {
+      @apply space-y-4;
+    }
+
+    .error-icon {
+      @apply flex justify-center;
+    }
+
+    .error-title {
+      @apply text-lg font-semibold text-gray-900 dark:text-white;
+    }
+
+    .error-description {
+      @apply text-red-600 dark:text-red-400;
+    }
+
+    .error-actions {
+      @apply flex items-center justify-center space-x-3;
+    }
+
+    .retry-btn {
+      @apply flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white
+             px-4 py-2 rounded-lg font-medium;
+    }
+
+    .reset-btn {
+      @apply px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg
+             text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800;
+    }
+
+    /* Sample Schema */
+    .sample-schema {
+      @apply bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700
+             rounded-lg p-6 h-fit;
+    }
+
+    .sample-title {
+      @apply flex items-center space-x-2 font-semibold text-gray-900 dark:text-white mb-4;
+    }
+
+    .sample-code {
+      @apply bg-gray-50 dark:bg-gray-900 rounded-lg p-4 mb-4;
+    }
+
+    .sample-code pre {
+      @apply text-xs text-gray-700 dark:text-gray-300 overflow-x-auto;
+    }
+
+    .sample-note {
+      @apply flex items-start space-x-2 text-xs text-gray-600 dark:text-gray-400;
+    }

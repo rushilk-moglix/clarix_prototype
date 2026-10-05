@@ -1,0 +1,443 @@
+<div class="schema-editor-container">
+  <!-- Header Section -->
+  <header class="editor-header">
+    <div class="header-left">
+      <button class="btn-icon" [routerLink]="['/genbi/schemas']">
+        <lucide-icon name="arrow-left" [size]="18"></lucide-icon>
+      </button>
+      <div class="title-group" *ngIf="editableSchema()">
+        <div class="schema-meta">
+          <input type="text" [(ngModel)]="editableSchema()!.database" class="database-input" placeholder="Database Name" [disabled]="!isEditable()">
+          <input type="text" [(ngModel)]="editableSchema()!.version" class="version-input" placeholder="v1.0" [disabled]="!isEditable()">
+          <span class="status-badge" [class]="storedSchema()?.status?.toLowerCase()">
+            {{ storedSchema()?.status }}
+          </span>
+        </div>
+        <input type="text" [(ngModel)]="editableSchema()!.description" class="desc-input" placeholder="Enter database description..." [disabled]="!isEditable()">
+      </div>
+    </div>
+
+    <div class="header-right">
+      <div class="view-toggle">
+        <button [class.active]="viewMode() === 'visual'" (click)="viewMode.set('visual')">
+          <lucide-icon name="eye" [size]="14"></lucide-icon>
+          <span>Visual</span>
+        </button>
+        <button [class.active]="viewMode() === 'json'" (click)="viewMode.set('json')">
+          <lucide-icon name="code" [size]="14"></lucide-icon>
+          <span>JSON</span>
+        </button>
+      </div>
+
+      <div class="action-btns" *ngIf="isEditable()">
+        <button class="btn outline" (click)="validateLive()" [disabled]="loading() || saving()">
+           <lucide-icon name="zap" [size]="16"></lucide-icon>
+           <span>Validate Live</span>
+        </button>
+        
+        <button class="btn primary" *ngIf="!isEditingActiveSchema()" (click)="saveSchema()" [disabled]="saving()">
+          <lucide-icon *ngIf="!saving()" name="save" [size]="16"></lucide-icon>
+          <div *ngIf="saving()" class="spinner-sm"></div>
+          <span>Save Changes</span>
+        </button>
+
+        <button class="btn primary" *ngIf="isEditingActiveSchema()" (click)="createDraft()" [disabled]="saving()">
+          <lucide-icon name="copy" [size]="16"></lucide-icon>
+          <span>Create Draft</span>
+        </button>
+
+        <div class="dropdown-more" *ngIf="storedSchema()">
+            <button class="btn outline" (click)="activateSchema()" *ngIf="storedSchema()?.status === 'DRAFT' && storedSchema()?.live_validation_result?.passed">
+                Activate
+            </button>
+            <button class="btn danger" (click)="archiveSchema()" *ngIf="storedSchema()?.status === 'ACTIVE' || storedSchema()?.status === 'DRAFT'">
+                Archive
+            </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Content Section -->
+  <main class="editor-main">
+    <div class="banner active-warning" *ngIf="isEditingActiveSchema()">
+      <lucide-icon name="triangle-alert" [size]="16"></lucide-icon>
+      <span>Editing <strong>Active Schema</strong>. Changes will be saved to a new Version.</span>
+    </div>
+
+    <div class="editor-content" *ngIf="!loading() && editableSchema()">
+      <!-- Sidebar -->
+      <aside class="editor-sidebar">
+        <div class="sidebar-header">
+          <h3>Collections</h3>
+          <button class="btn-icon-sm" (click)="addCollection()" [disabled]="!isEditable()">
+            <lucide-icon name="plus" [size]="16"></lucide-icon>
+          </button>
+        </div>
+        
+        <div class="collection-list">
+          <div class="sidebar-section">
+            <div class="section-title">Collections</div>
+            <div *ngFor="let coll of editableSchema()?.collections; let i = index" 
+                 class="list-item"
+                 [class.active]="activeCollectionIndex() === i && viewMode() === 'visual'"
+                 (click)="activeCollectionIndex.set(i); viewMode.set('visual')">
+              <div class="item-info">
+                <lucide-icon name="table-2" [size]="16"></lucide-icon>
+                <span class="truncate">{{ coll.name }}</span>
+              </div>
+              <div class="completeness-dot" [class.high]="collectionCompleteness() > 80" [class.mid]="collectionCompleteness() > 40" [class.low]="collectionCompleteness() <= 40" *ngIf="activeCollectionIndex() === i"></div>
+            </div>
+          </div>
+
+          <div class="sidebar-section">
+            <div class="section-title">Relationships</div>
+            <div *ngFor="let rel of editableSchema()?.relationships; let ri = index" 
+                 class="list-item"
+                 [class.active]="activeCollectionIndex() === -1 && viewMode() === 'visual' && ri === activeRelationshipIndex()"
+                 (click)="activeCollectionIndex.set(-1); activeRelationshipIndex.set(ri); viewMode.set('visual')">
+              <div class="item-info">
+                <lucide-icon name="git-merge" [size]="16"></lucide-icon>
+                <span class="truncate">{{ rel.name }}</span>
+              </div>
+            </div>
+            <button class="btn outline w-full mt-2" (click)="addRelationship()" [disabled]="!isEditable()">
+              <lucide-icon name="plus" [size]="14"></lucide-icon>
+              <span>Add Relation</span>
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Editor Area -->
+      <div class="field-editor" *ngIf="viewMode() === 'visual'">
+        
+        <!-- Collection Detail View -->
+        <ng-container *ngIf="activeCollectionIndex() !== null && activeCollectionIndex() !== -1">
+          <div class="collection-header-card" *ngIf="editableSchema()!.collections[activeCollectionIndex()!] as activeColl">
+            <div class="header-top">
+              <div class="info">
+                <div class="name">{{ activeColl.name }}</div>
+                <div class="desc">{{ activeColl.description }}</div>
+              </div>
+              <div class="completeness-stats">
+                <div class="pct">{{ collectionCompleteness() }}%</div>
+                <div class="label">Completeness</div>
+              </div>
+            </div>
+            <div class="completeness-track">
+              <div class="bar" [style.width.%]="collectionCompleteness()" 
+                   [class.green]="collectionCompleteness() > 80" 
+                   [class.amber]="collectionCompleteness() > 40" 
+                   [class.red]="collectionCompleteness() <= 40"></div>
+            </div>
+            <div class="header-footer">
+              <div class="stat"><span>{{ activeColl.fields.length }}</span> Fields</div>
+              <div class="stat">Tier: <span>{{ tierCounts().CORE }} CORE</span>, <span>{{ tierCounts().RELEVANT }} REL</span>, <span>{{ tierCounts().PERIPHERAL }} PER</span></div>
+              <div class="missing" *ngIf="missingDescriptionCount() > 0">
+                <lucide-icon name="info" [size]="12"></lucide-icon>
+                {{ missingDescriptionCount() }} fields missing description
+              </div>
+            </div>
+          </div>
+
+          <nav class="editor-tabs">
+            <button [class.active]="activeTab() === 'fields'" (click)="activeTab.set('fields')">Fields</button>
+            <button [class.active]="activeTab() === 'queries'" (click)="activeTab.set('queries')">Example Queries</button>
+            <button [class.active]="activeTab() === 'samples'" (click)="activeTab.set('samples')">Sample Documents</button>
+            <button [class.active]="activeTab() === 'settings'" (click)="activeTab.set('settings')">Settings</button>
+          </nav>
+
+          <div class="tab-content">
+            <!-- Fields Tab -->
+            <div *ngIf="activeTab() === 'fields'" class="fields-tab h-full flex flex-col">
+              <div class="toolbar">
+                <div class="search-box">
+                  <lucide-icon name="search" [size]="14"></lucide-icon>
+                  <input type="text" [ngModel]="fieldSearch()" (ngModelChange)="fieldSearch.set($event)" placeholder="Search fields by name or description...">
+                </div>
+                <div class="filters">
+                     <select [ngModel]="tierFilter()" (ngModelChange)="tierFilter.set($event)">
+                     <option value="ALL">All Tiers</option>
+                     <option *ngFor="let t of usageTiers" [value]="t">{{ t }}</option>
+                   </select>
+                   <button class="btn primary" (click)="addField(activeCollectionIndex()!)" [disabled]="!isEditable()">
+                     <lucide-icon name="plus" [size]="14"></lucide-icon>
+                     <span>Add Field</span>
+                   </button>
+                </div>
+                <div class="bulk-actions" *ngIf="selectedFieldNames().size > 0">
+                  <span>{{ selectedFieldNames().size }} selected</span>
+                  <button (click)="bulkSetTier(UsageTier.CORE)">Set CORE</button>
+                  <button (click)="bulkSetTier(UsageTier.RELEVANT)">Set RELEVANT</button>
+                  <button (click)="bulkSetTier(UsageTier.PERIPHERAL)">Set PERIPHERAL</button>
+                </div>
+              </div>
+
+              <div class="fields-table-container">
+                <table cdkDropList (cdkDropListDropped)="dropField($event)" [cdkDropListDisabled]="!isEditable()">
+                  <thead>
+                    <tr>
+                      <th style="width: 40px"></th>
+                      <th style="width: 40px"><input type="checkbox" disabled></th>
+                      <th style="width: 180px">Name</th>
+                      <th style="width: 120px">Type</th>
+                      <th style="width: 120px">Usage Tier</th>
+                      <th>Description</th>
+                      <th style="width: 150px">Example</th>
+                      <th style="width: 60px">Null</th>
+                      <th style="width: 50px"></th>
+                    </tr>
+                  </thead>
+                  <tbody class="fields-list">
+                    <tr *ngFor="let field of filteredFields(); let fi = index" cdkDrag [cdkDragData]="field">
+                      <td class="drag-handle" cdkDragHandle>
+                        <lucide-icon name="grip-vertical" [size]="14"></lucide-icon>
+                      </td>
+                      <td>
+                        <input type="checkbox" [checked]="selectedFieldNames().has(field.name)" (change)="toggleFieldSelection(field.name)">
+                      </td>
+                      <td><input type="text" [(ngModel)]="field.name" class="cell-input" [disabled]="!isEditable()"></td>
+                      <td>
+                        <select [(ngModel)]="field.type" class="cell-input" [disabled]="!isEditable()">
+                          <option *ngFor="let t of fieldTypes" [value]="t">{{ t }}</option>
+                        </select>
+                      </td>
+                      <td>
+                        <select [(ngModel)]="field.usageTier" class="cell-input" [disabled]="!isEditable()">
+                          <option *ngFor="let t of usageTiers" [value]="t">{{ t }}</option>
+                        </select>
+                      </td>
+                      <td><input type="text" [(ngModel)]="field.description" class="cell-input" [disabled]="!isEditable()"></td>
+                      <td><input type="text" [(ngModel)]="field.example" class="cell-input" placeholder="e.g. value" [disabled]="!isEditable()"></td>
+                      <td class="text-center">
+                        <input type="checkbox" [(ngModel)]="field.nullable" [disabled]="!isEditable()">
+                      </td>
+                      <td>
+                        <button class="btn-icon-sm text-danger" (click)="removeField(activeCollectionIndex()!, fi)" [disabled]="!isEditable()">
+                          <lucide-icon name="trash-2" [size]="14"></lucide-icon>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Queries Tab -->
+             <div *ngIf="activeTab() === 'queries'" class="queries-tab p-6 h-full flex flex-col gap-6 overflow-y-auto">
+                <div class="tab-header flex justify-between items-center">
+                  <div>
+                    <h3 class="text-lg font-bold">Common Queries</h3>
+                    <p class="text-sm text-slate-500">Provide natural language examples and their MQL equivalents to train the AI.</p>
+                  </div>
+                  <button class="btn primary" (click)="addQuery()" [disabled]="!isEditable()">
+                    <lucide-icon name="plus" [size]="16"></lucide-icon>
+                    <span>Add Example Query</span>
+                  </button>
+                </div>
+
+                <div class="queries-list flex flex-col gap-4">
+                  <div *ngFor="let q of editableSchema()!.collections[activeCollectionIndex()!].commonQueries; let qi = index" class="query-card group">
+                    <div class="card-header flex items-center justify-between p-4 bg-slate-50 border-b border-slate-200 rounded-t-xl">
+                      <div class="flex items-center gap-3 flex-1">
+                        <span class="query-number">#{{ qi + 1 }}</span>
+                        <select [(ngModel)]="q.type" class="type-select" [disabled]="!isEditable()">
+                          <option *ngFor="let t of queryTypes" [value]="t">{{ t }}</option>
+                        </select>
+                        <input type="text" [(ngModel)]="q.query" class="nl-input flex-1" placeholder="What natural language query does this represent?" [disabled]="!isEditable()">
+                      </div>
+                      <div class="actions flex items-center gap-2">
+                         <button class="btn-icon-sm hover:bg-red-50 text-red-500" (click)="removeQuery(qi)" [disabled]="!isEditable()">
+                           <lucide-icon name="trash-2" [size]="14"></lucide-icon>
+                         </button>
+                      </div>
+                    </div>
+                    <div class="card-body p-4 bg-white rounded-b-xl border border-t-0 border-slate-200">
+                      <div class="ql-editor-group">
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">MongoDB Query (MQL)</label>
+                        <div class="editor-container relative">
+                          <textarea [(ngModel)]="q.QL" 
+                                    class="ql-textarea" 
+                                    placeholder="db.users.find({ ... })"
+                                    rows="3"
+                                    [disabled]="!isEditable()"></textarea>
+                          <button class="test-btn" 
+                                  [disabled]="!q.QL || testingQuery() === qi" 
+                                  (click)="testQuery(qi)">
+                            <lucide-icon *ngIf="testingQuery() !== qi" name="play" [size]="14"></lucide-icon>
+                            <div *ngIf="testingQuery() === qi" class="spinner-sm"></div>
+                            <span>Test Run</span>
+                          </button>
+                        </div>
+                      </div>
+
+                      <!-- Test Results Panel -->
+                      <div *ngIf="queryResults()[qi]" class="test-results mt-4" [class.error]="!queryResults()[qi].success">
+                        <div class="result-header flex items-center justify-between mb-2">
+                           <span class="status flex items-center gap-2">
+                             <lucide-icon [name]="queryResults()[qi].success ? 'check-circle' : 'x-circle'" [size]="14"></lucide-icon>
+                             {{ queryResults()[qi].success ? 'Execution Successful' : 'Execution Failed' }}
+                           </span>
+                           <button class="text-[10px] uppercase font-bold text-slate-400 hover:text-slate-600" (click)="clearQueryResult($event, qi)">Clear Result</button>
+                        </div>
+                        <div class="result-body">
+                          <pre *ngIf="queryResults()[qi].success">{{ queryResults()[qi].results | json }}</pre>
+                          <div *ngIf="!queryResults()[qi].success" class="error-msg">{{ queryResults()[qi].error }}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div *ngIf="!editableSchema()!.collections[activeCollectionIndex()!].commonQueries?.length" class="empty-state">
+                    <lucide-icon name="circle-help" [size]="32" class="opacity-20 mb-2"></lucide-icon>
+                    <p>No example queries added yet.</p>
+                  </div>
+                </div>
+             </div>
+
+             <!-- Samples Tab -->
+             <div *ngIf="activeTab() === 'samples'" class="samples-tab p-6 h-full flex flex-col gap-4 overflow-hidden">
+                <div class="info-banner flex items-center gap-3 p-3 bg-blue-50 border border-blue-100 rounded-lg text-blue-700 text-sm">
+                  <lucide-icon name="info" [size]="16"></lucide-icon>
+                  <span>Provide an array of representative MongoDB documents to help the AI understand the data shape.</span>
+                </div>
+                <div class="editor-container flex-1 overflow-hidden flex flex-col">
+                   <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Sample Documents (JSON Array)</label>
+                   <textarea [value]="getSampleDocsString()" 
+                             (input)="onSampleDocsChange($event)"
+                             class="ql-textarea flex-1 w-full" 
+                             spellcheck="false"
+                             [disabled]="!isEditable()"></textarea>
+                </div>
+             </div>
+
+             <!-- Settings Tab -->
+             <div *ngIf="activeTab() === 'settings'" class="settings-tab p-8 h-full flex flex-col gap-8 overflow-y-auto">
+                <div class="setting-group max-w-md">
+                  <label class="block text-sm font-bold text-slate-700 mb-2">Estimated Document Count</label>
+                  <p class="text-xs text-slate-500 mb-3">Approximate number of documents in this collection for query optimization.</p>
+                  <input type="number" 
+                         [(ngModel)]="editableSchema()!.collections[activeCollectionIndex()!].estimatedDocCount" 
+                         class="cell-input border-slate-200 border p-2"
+                         [disabled]="!isEditable()">
+                </div>
+
+                <div class="setting-group">
+                  <label class="block text-sm font-bold text-slate-700 mb-2">Collection Indexes</label>
+                  <p class="text-xs text-slate-500 mb-3">List active indexes in this collection (one per line, e.g., "id_1", "name_text").</p>
+                  <textarea [value]="getIndexesString()" 
+                            (input)="updateIndexes($event)"
+                            class="ql-textarea h-40" 
+                            placeholder="index_name_1&#10;status_1"
+                            [disabled]="!isEditable()"></textarea>
+                </div>
+             </div>
+          </div>
+        </ng-container>
+
+        <!-- Relationship Editor -->
+        <ng-container *ngIf="activeCollectionIndex() === -1 && activeRelationshipIndex() !== null">
+            <div class="relationships-editor p-8 flex flex-col gap-8" *ngIf="editableSchema()!.relationships![activeRelationshipIndex()!] as rel">
+                <div class="section-header flex justify-between items-center mb-4">
+                  <div>
+                    <h2 class="text-2xl font-bold">Relationship Editor</h2>
+                    <p class="text-slate-500">Define how collections join together for complex aggregate queries.</p>
+                  </div>
+                  <button class="btn danger" (click)="removeRelationship(activeRelationshipIndex()!)" [disabled]="!isEditable()">
+                    <lucide-icon name="trash-2" [size]="16"></lucide-icon>
+                    <span>Remove Relation</span>
+                  </button>
+                </div>
+
+                <div class="rel-config-grid">
+                  <div class="rel-card">
+                    <div class="card-title">Source (From)</div>
+                    <div class="input-group">
+                      <label>Collection</label>
+                      <select [(ngModel)]="rel.from" [disabled]="!isEditable()">
+                        <option value="" disabled>Select Collection</option>
+                        <option *ngFor="let name of getCollectionNames()" [value]="name">{{ name }}</option>
+                      </select>
+                    </div>
+                    <div class="input-group">
+                      <label>Field</label>
+                      <select [(ngModel)]="rel.fromField" [disabled]="!isEditable() || !rel.from">
+                        <option value="" disabled>Select Field</option>
+                        <option *ngFor="let f of getCollectionFields(rel.from)" [value]="f">{{ f }}</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="rel-arrow flex flex-col items-center">
+                    <select [(ngModel)]="rel.type" class="type-pill mb-2" [disabled]="!isEditable()">
+                      <option *ngFor="let t of relationshipTypes" [value]="t">{{ t }}</option>
+                    </select>
+                    <lucide-icon name="arrow-right" [size]="32"></lucide-icon>
+                  </div>
+
+                  <div class="rel-card">
+                    <div class="card-title">Target (To)</div>
+                    <div class="input-group">
+                      <label>Collection</label>
+                      <select [(ngModel)]="rel.to" [disabled]="!isEditable()">
+                        <option value="" disabled>Select Collection</option>
+                        <option *ngFor="let name of getCollectionNames()" [value]="name">{{ name }}</option>
+                      </select>
+                    </div>
+                    <div class="input-group">
+                      <label>Field</label>
+                      <select [(ngModel)]="rel.toField" [disabled]="!isEditable() || !rel.to">
+                        <option value="" disabled>Select Field</option>
+                        <option *ngFor="let f of getCollectionFields(rel.to)" [value]="f">{{ f }}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="rel-meta-card bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                   <div class="mb-4">
+                      <label class="block text-sm font-bold text-slate-700 mb-2">Relationship Name</label>
+                      <input type="text" [(ngModel)]="rel.name" class="cell-input border-slate-200 border p-2 w-full max-w-md" [disabled]="!isEditable()">
+                   </div>
+                   <div>
+                      <label class="block text-sm font-bold text-slate-700 mb-2">Join Hint (For AI)</label>
+                      <p class="text-xs text-slate-500 mb-2">Describe how this join should be used or any special indexing needed.</p>
+                      <textarea [(ngModel)]="rel.joinHint" class="ql-textarea h-24" placeholder="e.g. Join orders to users where orders.userId equals users._id" [disabled]="!isEditable()"></textarea>
+                   </div>
+                </div>
+            </div>
+        </ng-container>
+
+        <div *ngIf="activeCollectionIndex() === null" class="no-selection">
+          <lucide-icon name="mouse-pointer-2" [size]="48" class="opacity-10"></lucide-icon>
+          <h3>No collection selected</h3>
+          <p>Select a collection from the sidebar to start refining its metadata.</p>
+        </div>
+      </div>
+
+      <!-- JSON Mode -->
+      <div *ngIf="viewMode() === 'json'" class="json-editor">
+        <div class="json-header">
+          <div class="info">
+            <lucide-icon name="info" [size]="16"></lucide-icon>
+            <span>Changes applied instantly. Check syntax carefully.</span>
+          </div>
+        </div>
+        <textarea [value]="jsonString" (input)="onJsonChange($event)" spellcheck="false" [disabled]="!isEditable()"></textarea>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer Alerts -->
+  <div class="editor-footer">
+    <div *ngIf="error()" class="alert error">
+      <lucide-icon name="circle-x" [size]="18"></lucide-icon>
+      <span>{{ error() }}</span>
+    </div>
+    <div *ngIf="success()" class="alert success">
+      <lucide-icon name="circle-check" [size]="18"></lucide-icon>
+      <span>Changes persistent successfully!</span>
+    </div>
+  </div>
+</div>

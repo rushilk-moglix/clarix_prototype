@@ -1,0 +1,242 @@
+.validation-page {
+      @apply max-w-6xl mx-auto space-y-8;
+    }
+
+    /* Page Header */
+    .page-header {
+      @apply flex items-start justify-between;
+    }
+
+    .header-content {
+      @apply flex-1;
+    }
+
+    .page-title {
+      @apply text-2xl font-bold text-gray-900 dark:text-white mb-1;
+    }
+
+    .page-description {
+      @apply text-gray-600 dark:text-gray-400;
+    }
+
+    .refresh-btn {
+      @apply flex items-center space-x-2 px-4 py-2 border border-gray-300 dark:border-gray-600
+             rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800
+             disabled:opacity-50 disabled:cursor-not-allowed;
+    }
+
+    /* Validation Stats */
+    .validation-stats {
+      @apply grid grid-cols-1 md:grid-cols-4 gap-4;
+    }
+
+    .stat-card {
+      @apply bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700
+             flex items-center space-x-3;
+    }
+
+    .stat-icon {
+      @apply w-10 h-10 rounded-lg flex items-center justify-center;
+    }
+
+    .stat-content {
+      @apply flex-1;
+    }
+
+    .stat-value {
+      @apply text-xl font-bold text-gray-900 dark:text-white;
+    }
+
+    .stat-label {
+      @apply text-sm text-gray-600 dark:text-gray-400;
+    }
+
+    /* Schemas Section */
+    .schemas-section {
+      @apply space-y-4;
+    }
+
+    .section-header {
+      @apply flex items-center justify-between;
+    }
+
+    .section-title {
+      @apply text-lg font-semibold text-gray-900 dark:text-white;
+    }
+
+    .filter-controls {
+      @apply flex items-center space-x-3;
+    }
+
+    .status-filter {
+      @apply px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg
+             bg-white dark:bg-gray-700 text-gray-900 dark:text-white
+             focus:outline-none focus:ring-2 focus:ring-blue-500;
+    }
+
+    /* Schema List */
+    .schemas-list {
+      @apply space-y-4;
+    }
+
+    .schema-card {
+      @apply bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700
+             p-6 hover:shadow-sm transition-shadow;
+    }
+
+    .schema-header {
+      @apply flex items-start justify-between mb-4;
+    }
+
+    .schema-info {
+      @apply flex-1;
+    }
+
+    .schema-name {
+      @apply flex items-center space-x-2 text-lg font-semibold text-gray-900 dark:text-white mb-1;
+    }
+
+    .schema-version {
+      @apply bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300
+             px-2 py-0.5 rounded text-xs font-medium;
+    }
+
+    .schema-meta {
+      @apply flex items-center space-x-4;
+    }
+
+    .meta-item {
+      @apply flex items-center space-x-1 text-sm text-gray-600 dark:text-gray-400;
+    }
+
+    .status-badge {
+      @apply px-2 py-1 rounded-full text-xs font-medium;
+    }
+
+    .status-active {
+      @apply bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-300;
+    }
+
+    .status-draft {
+      @apply bg-gray-100 dark:bg-gray-900/20 text-gray-800 dark:text-gray-300;
+    }
+
+    .status-validating {
+      @apply bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-300;
+    }
+
+    .status-failed {
+      @apply bg-red-100 dark:bg-red-900/20 text-red-800 dark:text-red-300;
+    }
+
+    /* Validation Status */
+    .validation-status {
+      @apply space-y-3 mb-4;
+    }
+
+    .validation-header {
+      @apply flex items-center space-x-2;
+    }
+
+    .validation-label {
+      @apply font-medium text-gray-900 dark:text-white;
+    }
+
+    .validation-errors {
+      @apply bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800
+             rounded-lg p-3;
+    }
+
+    .errors-title {
+      @apply font-medium text-red-800 dark:text-red-300 mb-2;
+    }
+
+    .errors-list {
+      @apply text-sm text-red-700 dark:text-red-300 space-y-1;
+    }
+
+    .errors-list li:before {
+      content: "•";
+      @apply text-red-500 font-bold mr-2;
+    }
+
+    .validation-warnings {
+      @apply bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800
+             rounded-lg p-3;
+    }
+
+    .warnings-title {
+      @apply font-medium text-yellow-800 dark:text-yellow-300 mb-2;
+    }
+
+    .warnings-list {
+      @apply text-sm text-yellow-700 dark:text-yellow-300 space-y-1;
+    }
+
+    .warnings-list li:before {
+      content: "•";
+      @apply text-yellow-500 font-bold mr-2;
+    }
+
+    .no-validation {
+      @apply flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400 mb-4;
+    }
+
+    /* Schema Actions */
+    .schema-actions {
+      @apply flex items-center space-x-3;
+    }
+
+    .validate-btn {
+      @apply flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white
+             px-4 py-2 rounded-lg text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed;
+    }
+
+    .activate-btn {
+      @apply flex items-center space-x-2 bg-green-600 hover:bg-green-700 text-white
+             px-4 py-2 rounded-lg text-sm font-medium;
+    }
+
+    /* Empty State */
+    .empty-state {
+      @apply text-center py-16;
+    }
+
+    .empty-icon {
+      @apply mb-4;
+    }
+
+    .empty-title {
+      @apply text-xl font-semibold text-gray-900 dark:text-white mb-2;
+    }
+
+    .empty-description {
+      @apply text-gray-600 dark:text-gray-400 mb-6;
+    }
+
+    .empty-actions {
+      @apply flex items-center justify-center space-x-3;
+    }
+
+    .primary-btn {
+      @apply inline-flex items-center space-x-2 bg-blue-600 hover:bg-blue-700
+             text-white px-4 py-2 rounded-lg font-medium;
+    }
+
+    .secondary-btn {
+      @apply px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg
+             text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800;
+    }
+
+    /* Loading State */
+    .loading-state {
+      @apply flex flex-col items-center justify-center py-16;
+    }
+
+    .loading-spinner {
+      @apply w-8 h-8 border-2 border-blue-600 border-t-transparent rounded-full animate-spin mb-4;
+    }
+
+    .loading-text {
+      @apply text-gray-600 dark:text-gray-400;
+    }

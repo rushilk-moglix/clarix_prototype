@@ -1,0 +1,188 @@
+<div class="login-container">
+
+  <!-- ===== Left Hero Panel ===== -->
+  <aside class="login-hero" aria-hidden="true">
+    <div class="hero-grid"></div>
+    <div class="hero-orb hero-orb--1"></div>
+    <div class="hero-orb hero-orb--2"></div>
+    <div class="hero-orb hero-orb--3"></div>
+
+    <div class="hero-content">
+
+      <div class="ai-badge">
+        <span class="ai-pulse"></span>
+        <lucide-icon name="brain" [size]="13"></lucide-icon>
+        <span>AI-powered call workflows</span>
+      </div>
+
+      <div class="hero-brand">
+        <div class="hero-logo">
+          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="24" cy="24" r="22" stroke="url(#heroGrad)" stroke-width="2" fill="none" />
+            <path d="M33 17 L24 24 L33 31" stroke="url(#heroGrad)" stroke-width="2.5" stroke-linecap="round"
+              stroke-linejoin="round" fill="none" />
+            <circle cx="16" cy="24" r="4" fill="url(#heroGrad)" />
+            <defs>
+              <linearGradient id="heroGrad" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#60a5fa" />
+                <stop offset="100%" stop-color="#c4b5fd" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <h1 class="hero-title">Clarix</h1>
+        <p class="hero-subtitle">Intelligence for your enterprise</p>
+      </div>
+
+      <!-- What the product actually does, rather than numbers we'd have to invent. -->
+      <div class="flow-card">
+        <div class="flow-card-head">
+          <span class="call-status">
+            <span class="call-status-dot"></span>
+            Agent on a call
+          </span>
+          <span class="call-timer">00:42</span>
+        </div>
+
+        <!-- Decorative: the bars are a fixed shape, not sampled audio. -->
+        <div class="wave" aria-hidden="true">
+          @for (bar of waveBars; track $index) {
+            <span class="wave-bar" [style.--i]="$index" [style.--h]="bar + '%'"></span>
+          }
+        </div>
+
+        <div class="flow-caption">
+          <lucide-icon name="workflow" [size]="13"></lucide-icon>
+          <span>From a spreadsheet to an answer</span>
+        </div>
+
+        <ol class="flow" role="list">
+          <li class="flow-step">
+            <span class="flow-icon"><lucide-icon name="upload" [size]="15"></lucide-icon></span>
+            <span class="flow-label">Trigger</span>
+          </li>
+          <li class="flow-link" aria-hidden="true"></li>
+          <li class="flow-step">
+            <span class="flow-icon"><lucide-icon name="database" [size]="15"></lucide-icon></span>
+            <span class="flow-label">Enrich</span>
+          </li>
+          <li class="flow-link" aria-hidden="true"></li>
+          <li class="flow-step">
+            <span class="flow-icon"><lucide-icon name="phone" [size]="15"></lucide-icon></span>
+            <span class="flow-label">Call</span>
+          </li>
+          <li class="flow-link" aria-hidden="true"></li>
+          <li class="flow-step">
+            <span class="flow-icon"><lucide-icon name="file-text" [size]="15"></lucide-icon></span>
+            <span class="flow-label">Report</span>
+          </li>
+        </ol>
+      </div>
+
+      <ul class="hero-features" role="list">
+        <li class="hero-feature">
+          <div class="hero-feature-icon">
+            <lucide-icon name="brain" [size]="15"></lucide-icon>
+          </div>
+          <div>
+            <span class="hero-feature-title">AI voice agents</span>
+            <span class="hero-feature-desc">Calls that ask the question and record the answer</span>
+          </div>
+        </li>
+        <li class="hero-feature">
+          <div class="hero-feature-icon">
+            <lucide-icon name="git-merge" [size]="15"></lucide-icon>
+          </div>
+          <div>
+            <span class="hero-feature-title">Workflows from a sheet</span>
+            <span class="hero-feature-desc">Upload a CSV, spawn a run for every row</span>
+          </div>
+        </li>
+        <li class="hero-feature">
+          <div class="hero-feature-icon">
+            <lucide-icon name="mail" [size]="15"></lucide-icon>
+          </div>
+          <div>
+            <span class="hero-feature-title">Reports on a schedule</span>
+            <span class="hero-feature-desc">Filtered exports, delivered to your inbox</span>
+          </div>
+        </li>
+      </ul>
+
+    </div>
+
+    <!-- Claims we can stand behind: each one is enforced in the code, not marketing. -->
+    <ul class="hero-trust" role="list">
+      <li class="trust-item">
+        <lucide-icon name="shield-check" [size]="15"></lucide-icon>
+        <span>Single sign-on via Azure AD</span>
+      </li>
+      <li class="trust-item">
+        <lucide-icon name="building-2" [size]="15"></lucide-icon>
+        <span>Create Custom Workflows</span>
+      </li>
+      <li class="trust-item">
+        <lucide-icon name="lock" [size]="15"></lucide-icon>
+        <span>Auto Emailing Execution Reports</span>
+      </li>
+    </ul>
+  </aside>
+
+  <!-- ===== Right Sign-in Panel ===== -->
+  <div class="login-panel">
+
+    <!-- Watermark: the brand mark, oversized and bleeding off the corner. Faint enough that the
+         sign-in button never competes with it. -->
+    <svg class="panel-watermark" viewBox="0 0 48 48" fill="none" aria-hidden="true"
+      xmlns="http://www.w3.org/2000/svg">
+      <circle cx="24" cy="24" r="22" stroke="currentColor" stroke-width="1.2" fill="none" />
+      <path d="M33 17 L24 24 L33 31" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+        stroke-linejoin="round" fill="none" />
+      <circle cx="16" cy="24" r="4" fill="currentColor" />
+    </svg>
+
+    <!-- A quiet echo of the waveform on the left, anchoring the foot of the panel. -->
+    <svg class="panel-wave" viewBox="0 0 600 60" preserveAspectRatio="none" aria-hidden="true"
+      xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M0 30 C 40 4, 70 56, 110 30 S 180 4, 220 30 S 290 56, 330 30 S 400 4, 440 30 S 510 56, 550 30 S 600 12, 600 30"
+        stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" />
+    </svg>
+
+    <div class="login-panel-inner">
+
+      <!-- Shown when the left brand panel is hidden (tablets and phones), so the product is always named. -->
+      <div class="login-brand-mobile">
+        <img src="favicon.svg" alt="" width="36" height="36" />
+        <span><b>Clarix</b><small>workflows and calls</small></span>
+      </div>
+
+      <header class="login-header">
+        <h2>Welcome back</h2>
+        <p>Sign in to continue</p>
+      </header>
+
+      <div class="login-form" [class.loading]="isLoading()">
+        <button type="button" class="sso-btn" (click)="handleMicrosoftLogin()" [disabled]="isLoading()"
+          aria-label="Sign in with Microsoft">
+          @if (isLoading()) {
+          <span class="btn-spinner" aria-hidden="true">
+            <lucide-icon name="loader-circle" [size]="18"></lucide-icon>
+          </span>
+          <span>Signing in&hellip;</span>
+          } @else {
+          <svg class="ms-logo" viewBox="0 0 23 23" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="1" y="1" width="10" height="10" fill="#F25022" />
+            <rect x="12" y="1" width="10" height="10" fill="#7FBA00" />
+            <rect x="1" y="12" width="10" height="10" fill="#00A4EF" />
+            <rect x="12" y="12" width="10" height="10" fill="#FFB900" />
+          </svg>
+          <span>Continue with Microsoft</span>
+          }
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+</div>

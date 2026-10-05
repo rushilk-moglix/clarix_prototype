@@ -1,0 +1,619 @@
+.login-container {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.login-hero {
+  flex: 1.1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 40px 56px;
+  background: linear-gradient(150deg, #060d1a 0%, #0d1f3c 55%, #0e1929 100%);
+  color: var(--ds-on-accent);
+  overflow: hidden;
+}
+
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(59, 130, 246, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59, 130, 246, 0.06) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(ellipse 90% 90% at 50% 50%, black 30%, transparent 100%);
+  pointer-events: none;
+}
+
+.hero-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+}
+
+.hero-orb--1 {
+  width: 420px;
+  height: 420px;
+  background: rgba(90, 81, 192, 0.22);
+  top: -12%;
+  right: -18%;
+  animation: orb-float 9s ease-in-out infinite;
+}
+
+.hero-orb--2 {
+  width: 320px;
+  height: 320px;
+  background: rgba(59, 130, 246, 0.18);
+  bottom: 8%;
+  left: -12%;
+  animation: orb-float 11s ease-in-out infinite reverse;
+}
+
+.hero-orb--3 {
+  width: 200px;
+  height: 200px;
+  background: rgba(139, 92, 246, 0.14);
+  top: 42%;
+  right: 8%;
+  animation: orb-float 13s ease-in-out infinite;
+}
+
+@keyframes orb-float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%       { transform: translate(16px, -22px) scale(1.04); }
+  66%       { transform: translate(-12px, 16px) scale(0.96); }
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 24px;
+}
+
+.ai-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: rgba(90, 81, 192, 0.14);
+  border: 1px solid rgba(90, 81, 192, 0.32);
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ds-accent-border);
+  letter-spacing: 0.3px;
+  width: fit-content;
+  animation: slide-down 0.6s ease-out both;
+}
+
+.ai-pulse {
+  width: 6px;
+  height: 6px;
+  background: var(--ds-accent-border);
+  border-radius: 50%;
+  flex-shrink: 0;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(165, 180, 252, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 0 5px rgba(165, 180, 252, 0);
+  }
+}
+
+.hero-brand {
+  animation: slide-up 0.65s ease-out 0.1s both;
+}
+
+.hero-logo {
+  width: 52px;
+  height: 52px;
+  margin-bottom: 20px;
+}
+
+.hero-logo svg {
+  width: 100%;
+  height: 100%;
+}
+
+.hero-title {
+  font-size: 54px;
+  font-weight: 800;
+  letter-spacing: -2px;
+  line-height: 1;
+  margin: 0 0 10px;
+  background: linear-gradient(130deg, #ffffff 0%, var(--ds-accent-border) 50%, var(--ds-accent-border) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-subtitle {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 300;
+  letter-spacing: 0.3px;
+  margin: 0;
+}
+
+/* Pipeline: what the product does, in four beats. A travelling pulse walks the
+   connectors so the panel has motion without pretending to show live data. */
+.flow-card {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.03) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 16px 18px 18px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 20px 50px -20px rgba(2, 6, 23, 0.8);
+  animation: slide-up 0.65s ease-out 0.2s both;
+}
+
+.flow-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.call-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+// A live indicator: the halo pulses, the dot itself stays put so it reads as a status light.
+.call-status-dot {
+  position: relative;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #34d399;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    background: rgba(52, 211, 153, 0.35);
+    animation: call-ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+}
+
+@keyframes call-ping {
+  0%        { transform: scale(0.6); opacity: 0.9; }
+  70%, 100% { transform: scale(1.7); opacity: 0; }
+}
+
+.call-timer {
+  font-variant-numeric: tabular-nums;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* Voice waveform. Each bar's resting height comes from the component; the animation only
+   breathes around it, so the shape stays legible rather than turning to noise. */
+.wave {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  height: 46px;
+  margin: 14px 0 12px;
+}
+
+.wave-bar {
+  flex: 1 1 0;
+  max-width: 5px; // thin enough to read as a voice trace, not a bar chart
+  height: var(--h);
+  border-radius: 2px;
+  background: linear-gradient(180deg, var(--ds-accent-border) 0%, var(--ds-info) 100%);
+  opacity: 0.85;
+  transform-origin: center;
+  animation: wave-breathe 1.6s ease-in-out infinite;
+  animation-delay: calc(var(--i) * -0.08s);
+}
+
+@keyframes wave-breathe {
+  0%, 100% { transform: scaleY(0.55); }
+  50%      { transform: scaleY(1); }
+}
+
+.flow-caption {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.45);
+  padding-top: 12px;
+  margin-bottom: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+
+  lucide-icon {
+    color: var(--ds-info-fg);
+    flex-shrink: 0;
+  }
+}
+
+.flow {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+.flow-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  flex-shrink: 0;
+  // Fixed width so the rails between steps come out equal, whatever the label's length.
+  width: 56px;
+}
+
+.flow-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ds-accent-border);
+  background: rgba(90, 81, 192, 0.18);
+  border: 1px solid rgba(90, 81, 192, 0.3);
+}
+
+.flow-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+/* The rail between two steps, with a dot that runs along it. */
+.flow-link {
+  position: relative;
+  flex: 1;
+  height: 1px;
+  margin: 0 6px 20px; // sits level with the icons, clear of the labels
+  background: rgba(255, 255, 255, 0.14);
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--ds-info);
+    box-shadow: 0 0 6px 1px rgba(96, 165, 250, 0.7);
+    transform: translate(-50%, -50%);
+    animation: flow-pulse 3.2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+  }
+
+  // Stagger so the pulse reads as one value moving through the pipeline.
+  &:nth-of-type(4)::after { animation-delay: 0.35s; }
+  &:nth-of-type(6)::after { animation-delay: 0.7s; }
+}
+
+@keyframes flow-pulse {
+  0%        { left: 0;    opacity: 0; }
+  12%       { opacity: 1; }
+  45%, 100% { left: 100%; opacity: 0; }
+}
+
+.hero-features {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  animation: slide-up 0.65s ease-out 0.3s both;
+}
+
+.hero-feature {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.hero-feature-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: rgba(90, 81, 192, 0.18);
+  border: 1px solid rgba(90, 81, 192, 0.28);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--ds-accent-border);
+}
+
+.hero-feature-title {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 3px;
+}
+
+.hero-feature-desc {
+  display: block;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.42);
+  line-height: 1.5;
+}
+
+/* Trust strip: statements the code actually enforces, in place of invented metrics. */
+.hero-trust {
+  position: relative;
+  z-index: 1;
+  list-style: none;
+  margin: 0;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  animation: slide-up 0.65s ease-out 0.4s both;
+}
+
+.trust-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.55);
+
+  lucide-icon {
+    color: #6ee7b7; // green reads as "safe", and nothing else on this panel is green
+    flex-shrink: 0;
+  }
+}
+
+/* ===== Right Login Panel ===== */
+.login-panel {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  background: var(--bg-primary);
+  position: relative;
+}
+
+.login-panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(59, 130, 246, 0.035) 1px, transparent 1px);
+  background-size: 24px 24px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, black 20%, transparent 85%);
+  pointer-events: none;
+}
+
+// Warms the middle of an otherwise flat panel and pulls the eye to the button.
+.login-panel::after {
+  content: '';
+  position: absolute;
+  width: 620px;
+  height: 620px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(90, 81, 192, 0.1) 0%, transparent 68%);
+  filter: blur(20px);
+  pointer-events: none;
+}
+
+/* Watermark: brand mark, oversized, bleeding off the bottom-right. Inherits the theme's text
+   colour at a whisper of opacity, so it works in light and dark without a second palette. */
+.panel-watermark {
+  position: absolute;
+  right: -110px;
+  bottom: -130px;
+  width: 520px;
+  height: 520px;
+  color: var(--text-color, var(--ds-text));
+  opacity: 0.035;
+  transform: rotate(-8deg);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Echoes the call waveform on the left, tying the two halves together. */
+.panel-wave {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 48px;
+  width: 100%;
+  height: 60px;
+  color: var(--primary-color, var(--ds-accent-fg));
+  opacity: 0.07;
+  // Fades into the panel rather than starting hard against its edges.
+  mask-image: linear-gradient(90deg, transparent 0%, black 22%, black 78%, transparent 100%);
+  pointer-events: none;
+}
+
+.login-panel-inner {
+  position: relative;
+  z-index: 1;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  animation: panel-enter 0.55s cubic-bezier(0, 0, 0.2, 1) 0.15s both;
+}
+
+/* Login header */
+.login-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.login-header h2 {
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: var(--text-color);
+  margin: 0;
+}
+
+.login-header p {
+  font-size: 15px;
+  color: var(--text-muted);
+  font-weight: 400;
+  margin: 0;
+}
+
+/* Form */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.login-form.loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* Microsoft SSO button */
+.sso-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 14px 24px;
+  background: var(--primary-color);
+  color: var(--ds-on-accent);
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+  background: linear-gradient(135deg, var(--ds-accent) 0%, var(--ds-info) 55%, var(--ds-accent) 100%);
+  box-shadow: 0 10px 28px -8px rgba(61, 51, 160, 0.65);
+}
+
+.sso-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 22px rgba(59, 130, 246, 0.42);
+  background: var(--primary-hover);
+}
+
+.sso-btn:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.28);
+}
+
+.sso-btn:disabled {
+  opacity: 0.68;
+  cursor: not-allowed;
+}
+
+.ms-logo {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.btn-spinner {
+  display: inline-flex;
+  animation: spin 0.85s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ===== Entry Animations ===== */
+@keyframes slide-down {
+  from { opacity: 0; transform: translateY(-14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes panel-enter {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== Responsive ===== */
+.login-brand-mobile { display: none; }
+
+@media (max-width: 1024px) {
+  .login-brand-mobile {
+    display: flex; align-items: center; gap: 10px;
+    img { border-radius: 10px; display: block; }
+    span { display: grid; line-height: 1.1; }
+    b { font-size: 18px; font-weight: 700; letter-spacing: -0.02em; color: var(--text-color); }
+    small { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); margin-top: 3px; }
+  }
+
+  .login-hero {
+    display: none;
+  }
+
+  .login-panel {
+    padding: 32px 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-panel {
+    padding: 24px 16px;
+    align-items: flex-start;
+    padding-top: 52px;
+  }
+
+  .login-panel-inner {
+    gap: 24px;
+  }
+
+  .login-header h2 {
+    font-size: 26px;
+  }
+}
+
+/* Anything that loops forever stops for a user who has asked for less motion. */
+@media (prefers-reduced-motion: reduce) {
+  .flow-link::after,
+  .ai-pulse,
+  .hero-orb,
+  .wave-bar,
+  .call-status-dot::after {
+    animation: none;
+  }
+
+  .flow-link::after {
+    opacity: 0;
+  }
+}

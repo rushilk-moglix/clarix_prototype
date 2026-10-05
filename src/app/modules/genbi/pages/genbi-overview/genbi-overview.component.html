@@ -1,0 +1,139 @@
+<div class="genbi-overview">
+  <!-- Stats Cards -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon bg-blue-100 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400">
+        <lucide-icon name="database" [size]="24"></lucide-icon>
+      </div>
+      <div class="stat-content">
+        <div class="stat-value">{{ totalSchemas }}</div>
+        <div class="stat-label">Total Schemas</div>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon bg-green-100 dark:bg-green-900/20 text-green-600 dark:text-green-400">
+        <lucide-icon name="circle-check" [size]="24"></lucide-icon>
+      </div>
+      <div class="stat-content">
+        <div class="stat-value">{{ activeSchemas }}</div>
+        <div class="stat-label">Active Schemas</div>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon bg-yellow-100 dark:bg-yellow-900/20 text-yellow-600 dark:text-yellow-400">
+        <lucide-icon name="clock" [size]="24"></lucide-icon>
+      </div>
+      <div class="stat-content">
+        <div class="stat-value">{{ draftSchemas }}</div>
+        <div class="stat-label">Draft Schemas</div>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon bg-purple-100 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400">
+        <lucide-icon name="layers" [size]="24"></lucide-icon>
+      </div>
+      <div class="stat-content">
+        <div class="stat-value">{{ chunkStats?.total_chunks || 0 }}</div>
+        <div class="stat-label">Total Chunks</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="quick-actions">
+    <h2 class="section-title">Quick Actions</h2>
+    <div class="action-grid">
+      <a routerLink="../upload" class="action-card">
+        <div class="action-icon bg-blue-500">
+          <lucide-icon name="upload" [size]="20" class="text-white"></lucide-icon>
+        </div>
+        <div class="action-content">
+          <h3 class="action-title">Upload Schema</h3>
+          <p class="action-description">Upload a new MongoDB schema definition</p>
+        </div>
+        <lucide-icon name="arrow-right" [size]="16" class="text-gray-400"></lucide-icon>
+      </a>
+
+      <a routerLink="../schemas" class="action-card">
+        <div class="action-icon bg-green-500">
+          <lucide-icon name="file-text" [size]="20" class="text-white"></lucide-icon>
+        </div>
+        <div class="action-content">
+          <h3 class="action-title">Manage Schemas</h3>
+          <p class="action-description">View and manage existing schemas</p>
+        </div>
+        <lucide-icon name="arrow-right" [size]="16" class="text-gray-400"></lucide-icon>
+      </a>
+
+      <a routerLink="../validation" class="action-card">
+        <div class="action-icon bg-purple-500">
+          <lucide-icon name="circle-check" [size]="20" class="text-white"></lucide-icon>
+        </div>
+        <div class="action-content">
+          <h3 class="action-title">Validate Schemas</h3>
+          <p class="action-description">Run live validation against databases</p>
+        </div>
+        <lucide-icon name="arrow-right" [size]="16" class="text-gray-400"></lucide-icon>
+      </a>
+    </div>
+  </div>
+
+  <!-- Recent Schemas -->
+  <div class="recent-schemas">
+    <div class="section-header">
+      <h2 class="section-title">Recent Schemas</h2>
+      <a routerLink="../schemas" class="view-all-link">
+        View All
+        <lucide-icon name="arrow-right" [size]="16"></lucide-icon>
+      </a>
+    </div>
+
+    <div class="schema-list" *ngIf="recentSchemas.length > 0; else noSchemas">
+      <div class="schema-item" *ngFor="let schema of recentSchemas">
+        <div class="schema-info">
+          <div class="schema-name">{{ schema.schema.database }}</div>
+          <div class="schema-meta">
+            <span class="schema-version">v{{ schema.version }}</span>
+            <span class="schema-date">{{ formatDate(schema.uploaded_at) }}</span>
+          </div>
+        </div>
+        <div class="schema-status">
+          <span 
+            class="status-badge"
+            [ngClass]="{
+              'status-active': schema.status === 'ACTIVE',
+              'status-draft': schema.status === 'DRAFT',
+              'status-validating': schema.status === 'VALIDATING',
+              'status-failed': schema.status === 'FAILED',
+              'status-archived': schema.status === 'ARCHIVED'
+            }">
+            {{ schema.status }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #noSchemas>
+      <div class="empty-state">
+        <div class="empty-icon">
+          <lucide-icon name="database" [size]="48" class="text-gray-300 dark:text-gray-600"></lucide-icon>
+        </div>
+        <h3 class="empty-title">No schemas uploaded yet</h3>
+        <p class="empty-description">Get started by uploading your first MongoDB schema</p>
+        <a routerLink="../upload" class="empty-action">
+          <lucide-icon name="plus" [size]="16"></lucide-icon>
+          Upload Schema
+        </a>
+      </div>
+    </ng-template>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading()" class="loading-overlay">
+    <div class="loading-spinner"></div>
+    <p class="loading-text">Loading overview...</p>
+  </div>
+</div>

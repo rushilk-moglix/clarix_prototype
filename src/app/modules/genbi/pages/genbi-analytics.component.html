@@ -1,0 +1,210 @@
+<div class="analytics-page">
+      <!-- Header -->
+      <div class="page-header">
+        <h1 class="page-title">GenBI Analytics</h1>
+        <p class="page-description">
+          Monitor schema usage, performance metrics, and system health
+        </p>
+      </div>
+
+      <!-- Key Metrics -->
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-header">
+            <div class="metric-icon bg-blue-100 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400">
+              <lucide-icon name="database" [size]="24"></lucide-icon>
+            </div>
+            <div class="metric-trend positive">
+              <lucide-icon name="trending-up" [size]="14"></lucide-icon>
+              <span>+12%</span>
+            </div>
+          </div>
+          <div class="metric-value">{{ totalSchemas() }}</div>
+          <div class="metric-label">Total Schemas</div>
+          <div class="metric-description">Active and draft schemas</div>
+        </div>
+ 
+        <div class="metric-card">
+          <div class="metric-header">
+            <div class="metric-icon bg-green-100 dark:bg-green-900/20 text-green-600 dark:text-green-400">
+              <lucide-icon name="circle-check" [size]="24"></lucide-icon>
+            </div>
+            <div class="metric-trend positive">
+              <lucide-icon name="trending-up" [size]="14"></lucide-icon>
+              <span>+5%</span>
+            </div>
+          </div>
+          <div class="metric-value">{{ activeSchemas() }}</div>
+          <div class="metric-label">Active Schemas</div>
+          <div class="metric-description">Ready for queries</div>
+        </div>
+ 
+        <div class="metric-card">
+          <div class="metric-header">
+            <div class="metric-icon bg-purple-100 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400">
+              <lucide-icon name="layers" [size]="24"></lucide-icon>
+            </div>
+            <div class="metric-trend neutral">
+              <lucide-icon name="minus" [size]="14"></lucide-icon>
+              <span>0%</span>
+            </div>
+          </div>
+          <div class="metric-value">{{ chunkStats()?.total_chunks || 0 }}</div>
+          <div class="metric-label">Total Chunks</div>
+          <div class="metric-description">Vector embeddings</div>
+        </div>
+ 
+        <div class="metric-card">
+          <div class="metric-header">
+            <div class="metric-icon bg-orange-100 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400">
+              <lucide-icon name="zap" [size]="24"></lucide-icon>
+            </div>
+            <div class="metric-trend positive">
+              <lucide-icon name="trending-up" [size]="14"></lucide-icon>
+              <span>+18%</span>
+            </div>
+          </div>
+          <div class="metric-value">{{ chunkStats()?.successful_chunks || 0 }}</div>
+          <div class="metric-label">Success Rate</div>
+          <div class="metric-description">Successful chunks</div>
+        </div>
+      </div>
+
+      <!-- Charts Section -->
+      <div class="charts-section">
+        <div class="charts-grid">
+          <!-- Schema Status Distribution -->
+          <div class="chart-card">
+            <div class="chart-header">
+              <h3 class="chart-title">Schema Status Distribution</h3>
+              <button class="chart-action">
+                <lucide-icon name="ellipsis" [size]="16"></lucide-icon>
+              </button>
+            </div>
+            <div class="chart-content">
+              <div class="status-chart">
+                <div class="status-item" *ngFor="let status of statusDistribution()">
+                  <div class="status-bar">
+                    <div 
+                      class="status-fill"
+                      [style.width.%]="status.percentage"
+                      [ngClass]="getStatusClass(status.status)">
+                    </div>
+                  </div>
+                  <div class="status-info">
+                    <span class="status-name">{{ status.status }}</span>
+                    <span class="status-count">{{ status.count }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent Activity -->
+          <div class="chart-card">
+            <div class="chart-header">
+              <h3 class="chart-title">Recent Activity</h3>
+              <a routerLink="../schemas" class="chart-action">
+                <lucide-icon name="external-link" [size]="16"></lucide-icon>
+              </a>
+            </div>
+            <div class="chart-content">
+              <div class="activity-list">
+                <div class="activity-item" *ngFor="let activity of recentActivity()">
+                  <div class="activity-icon" [ngClass]="getActivityIconClass(activity.type)">
+                    <lucide-icon [name]="getActivityIcon(activity.type)" [size]="14"></lucide-icon>
+                  </div>
+                  <div class="activity-content">
+                    <div class="activity-title">{{ activity.title }}</div>
+                    <div class="activity-time">{{ formatRelativeTime(activity.timestamp) }}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Collection Statistics -->
+          <div class="chart-card">
+            <div class="chart-header">
+              <h3 class="chart-title">Collection Statistics</h3>
+              <button class="chart-action">
+                <lucide-icon name="refresh-cw" [size]="16"></lucide-icon>
+              </button>
+            </div>
+            <div class="chart-content">
+              <div class="collection-stats">
+                <div class="stat-row">
+                  <span class="stat-label">Total Collections</span>
+                  <span class="stat-value">{{ totalCollections() }}</span>
+                </div>
+                <div class="stat-row">
+                  <span class="stat-label">Avg per Schema</span>
+                  <span class="stat-value">{{ averageCollectionsPerSchema() }}</span>
+                </div>
+                <div class="stat-row">
+                  <span class="stat-label">Most Complex</span>
+                  <span class="stat-value">{{ mostComplexSchema()?.name || 'N/A' }}</span>
+                </div>
+                <div class="stat-row">
+                  <span class="stat-label">Latest Upload</span>
+                  <span class="stat-value">{{ formatDate(latestUpload()) }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- System Health -->
+          <div class="chart-card">
+            <div class="chart-header">
+              <h3 class="chart-title">System Health</h3>
+              <div class="health-indicator healthy">
+                <lucide-icon name="circle" [size]="8"></lucide-icon>
+                <span>Healthy</span>
+              </div>
+            </div>
+            <div class="chart-content">
+              <div class="health-metrics">
+                <div class="health-item">
+                  <div class="health-label">
+                    <lucide-icon name="database" [size]="14"></lucide-icon>
+                    Database Connection
+                  </div>
+                  <div class="health-status healthy">
+                    <lucide-icon name="check" [size]="14"></lucide-icon>
+                    Online
+                  </div>
+                </div>
+                <div class="health-item">
+                  <div class="health-label">
+                    <lucide-icon name="brain" [size]="14"></lucide-icon>
+                    Vector Store
+                  </div>
+                  <div class="health-status healthy">
+                    <lucide-icon name="check" [size]="14"></lucide-icon>
+                    Online
+                  </div>
+                </div>
+                <div class="health-item">
+                  <div class="health-label">
+                    <lucide-icon name="cpu" [size]="14"></lucide-icon>
+                    Processing
+                  </div>
+                  <div class="health-status healthy">
+                    <lucide-icon name="check" [size]="14"></lucide-icon>
+                    Normal
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Loading State -->
+      <div class="loading-overlay" *ngIf="loading()">
+        <div class="loading-content">
+          <div class="loading-spinner"></div>
+          <p class="loading-text">Loading analytics...</p>
+        </div>
+      </div>
+    </div>

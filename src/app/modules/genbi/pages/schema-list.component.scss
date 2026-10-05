@@ -1,0 +1,209 @@
+.schema-list-page {
+      @apply max-w-6xl mx-auto space-y-6;
+    }
+
+    /* Page Header */
+    .page-header {
+      @apply flex items-start justify-between mb-8;
+    }
+
+    .header-content {
+      @apply flex-1;
+    }
+
+    .page-title {
+      @apply text-2xl font-bold text-gray-900 dark:text-white mb-1;
+    }
+
+    .page-description {
+      @apply text-gray-600 dark:text-gray-400;
+    }
+
+    .header-actions {
+      @apply flex items-center space-x-3;
+    }
+
+    .refresh-btn {
+      @apply flex items-center space-x-2 px-4 py-2 border border-gray-300 dark:border-gray-600
+             rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800
+             disabled:opacity-50 disabled:cursor-not-allowed;
+    }
+
+    .upload-btn {
+      @apply flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white
+             px-4 py-2 rounded-lg font-medium;
+    }
+
+    /* Filters */
+    .filters-section {
+      @apply flex items-center justify-between gap-4 bg-white dark:bg-gray-800 
+             rounded-lg p-4 border border-gray-200 dark:border-gray-700;
+    }
+
+    .search-box {
+      @apply relative flex-1 max-w-md;
+    }
+
+    .search-icon {
+      @apply absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400;
+    }
+
+    .search-input {
+      @apply w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600
+             rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white
+             placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none
+             focus:ring-2 focus:ring-blue-500 focus:border-transparent;
+    }
+
+    .filter-controls {
+      @apply flex items-center space-x-3;
+    }
+
+    .status-filter,
+    .sort-select {
+      @apply px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg
+             bg-white dark:bg-gray-700 text-gray-900 dark:text-white
+             focus:outline-none focus:ring-2 focus:ring-blue-500;
+    }
+
+    /* Schema Grid */
+    .schemas-grid {
+      @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
+    }
+
+    .schema-card {
+      @apply bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700
+             p-6 hover:shadow-md transition-shadow relative;
+    }
+
+    .schema-header {
+      @apply flex items-center justify-between mb-4;
+    }
+
+    .schema-title {
+      @apply flex items-center space-x-2 flex-1;
+    }
+
+    .schema-name {
+      @apply font-semibold text-gray-900 dark:text-white;
+    }
+
+    .schema-version {
+      @apply bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300
+             px-2 py-0.5 rounded text-xs font-medium;
+    }
+
+    /* Dropdown */
+    .dropdown {
+      @apply relative;
+    }
+
+    .dropdown-trigger {
+      @apply p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400;
+    }
+
+    .dropdown-menu {
+      @apply absolute right-0 top-8 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700
+             rounded-lg shadow-lg py-1 z-10 min-w-40 hidden;
+    }
+
+    .dropdown.open .dropdown-menu {
+      @apply block;
+    }
+
+    .dropdown-item {
+      @apply flex items-center space-x-2 w-full px-3 py-2 text-sm text-gray-700 dark:text-gray-300
+             hover:bg-gray-100 dark:hover:bg-gray-700;
+    }
+
+    /* Status Badge */
+    .status-badge {
+      @apply px-2 py-1 rounded-full text-xs font-medium;
+    }
+
+    .status-active {
+      @apply bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-300;
+    }
+
+    .status-draft {
+      @apply bg-gray-100 dark:bg-gray-900/20 text-gray-800 dark:text-gray-300;
+    }
+
+    .status-validating {
+      @apply bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-300;
+    }
+
+    .status-failed {
+      @apply bg-red-100 dark:bg-red-900/20 text-red-800 dark:text-red-300;
+    }
+
+    .status-archived {
+      @apply bg-yellow-100 dark:bg-yellow-900/20 text-yellow-800 dark:text-yellow-300;
+    }
+
+    /* Schema Info */
+    .schema-info {
+      @apply grid grid-cols-2 gap-2 mb-4 text-sm;
+    }
+
+    .info-item {
+      @apply flex items-center space-x-1 text-gray-600 dark:text-gray-400;
+    }
+
+    .schema-description {
+      @apply text-sm text-gray-600 dark:text-gray-400 mb-3 line-clamp-2;
+    }
+
+    /* Warnings */
+    .schema-warnings {
+      @apply space-y-1;
+    }
+
+    .warning-item {
+      @apply flex items-center space-x-1 text-xs text-yellow-700 dark:text-yellow-300
+             bg-yellow-50 dark:bg-yellow-900/20 px-2 py-1 rounded;
+    }
+
+    /* Empty State */
+    .empty-state {
+      @apply text-center py-16;
+    }
+
+    .empty-icon {
+      @apply mb-4;
+    }
+
+    .empty-title {
+      @apply text-xl font-semibold text-gray-900 dark:text-white mb-2;
+    }
+
+    .empty-description {
+      @apply text-gray-600 dark:text-gray-400 mb-6;
+    }
+
+    .empty-actions {
+      @apply flex items-center justify-center space-x-3;
+    }
+
+    .primary-btn {
+      @apply inline-flex items-center space-x-2 bg-blue-600 hover:bg-blue-700
+             text-white px-4 py-2 rounded-lg font-medium;
+    }
+
+    .secondary-btn {
+      @apply px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg
+             text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800;
+    }
+
+    /* Loading State */
+    .loading-state {
+      @apply flex flex-col items-center justify-center py-16;
+    }
+
+    .loading-spinner {
+      @apply w-8 h-8 border-2 border-blue-600 border-t-transparent rounded-full animate-spin mb-4;
+    }
+
+    .loading-text {
+      @apply text-gray-600 dark:text-gray-400;
+    }

@@ -1,0 +1,211 @@
+<div class="schema-upload-page">
+      <div class="upload-container">
+        <!-- Header -->
+        <div class="upload-header">
+          <h1 class="upload-title">Upload Schema</h1>
+          <p class="upload-description">
+            Upload a MongoDB schema definition file to enable natural language querying
+          </p>
+        </div>
+
+        <!-- Upload Form -->
+        <div class="upload-form" *ngIf="!uploading() && !uploadSuccess">
+          <!-- File Drop Zone -->
+          <div 
+            class="file-drop-zone"
+            [class.dragging]="isDragging"
+            (dragover)="onDragOver($event)"
+            (dragleave)="onDragLeave($event)"
+            (drop)="onDrop($event)"
+            (click)="fileInput.click()">
+            
+            <div class="drop-content">
+              <div class="drop-icon">
+                <lucide-icon 
+                  name="cloud-upload" 
+                  [size]="48" 
+                  class="text-blue-500">
+                </lucide-icon>
+              </div>
+              
+              <h3 class="drop-title">
+                {{ selectedFile ? 'File Selected' : 'Drop your schema file here' }}
+              </h3>
+              
+              <p class="drop-description" *ngIf="!selectedFile">
+                or <span class="link-text">click to browse</span> for JSON files
+              </p>
+              
+              <!-- Selected File Info -->
+              <div class="selected-file" *ngIf="selectedFile">
+                <div class="file-info">
+                  <lucide-icon name="file-text" [size]="20"></lucide-icon>
+                  <div class="file-details">
+                    <div class="file-name">{{ selectedFile.name }}</div>
+                    <div class="file-size">{{ formatFileSize(selectedFile.size) }}</div>
+                  </div>
+                </div>
+                <button 
+                  class="remove-file"
+                  (click)="removeFile($event)">
+                  <lucide-icon name="x" [size]="16"></lucide-icon>
+                </button>
+              </div>
+            </div>
+
+            <input
+              #fileInput
+              type="file"
+              accept=".json"
+              (change)="onFileSelected($event)"
+              class="hidden">
+          </div>
+
+          <!-- Upload Guidelines -->
+          <div class="upload-guidelines">
+            <h4 class="guidelines-title">
+              <lucide-icon name="info" [size]="16"></lucide-icon>
+              Schema Requirements
+            </h4>
+            <ul class="guidelines-list">
+              <li>File must be in JSON format (.json)</li>
+              <li>Maximum file size: 10MB</li>
+              <li>Must contain valid MongoDB schema definition</li>
+              <li>Include collections, fields, and relationships</li>
+              <li>Provide descriptions for better query understanding</li>
+            </ul>
+          </div>
+
+          <!-- Upload Actions -->
+          <div class="upload-actions" *ngIf="selectedFile">
+            <button 
+              class="cancel-btn"
+              (click)="removeFile()">
+              Cancel
+            </button>
+            <button 
+              class="upload-btn"
+              (click)="uploadFile()"
+              [disabled]="!selectedFile">
+              <lucide-icon name="upload" [size]="16"></lucide-icon>
+              Upload Schema
+            </button>
+          </div>
+        </div>
+
+        <!-- Upload Progress -->
+        <div class="upload-progress" *ngIf="uploading()">
+          <div class="progress-content">
+            <div class="progress-icon">
+              <div class="spinner"></div>
+            </div>
+            <h3 class="progress-title">Uploading Schema</h3>
+            <p class="progress-description">
+              {{ selectedFile?.name }} • {{ formatFileSize(selectedFile?.size || 0) }}
+            </p>
+            <div class="progress-bar">
+              <div class="progress-fill" [style.width.%]="uploadProgress()"></div>
+            </div>
+            <div class="progress-text">{{ uploadProgress() }}% complete</div>
+          </div>
+        </div>
+
+        <!-- Upload Success -->
+        <div class="upload-success" *ngIf="uploadSuccess && uploadedSchema">
+          <div class="success-content">
+            <div class="success-icon">
+              <lucide-icon name="circle-check" [size]="48" class="text-green-500"></lucide-icon>
+            </div>
+            <h3 class="success-title">Schema Uploaded Successfully!</h3>
+            <p class="success-description">
+              Your schema for <strong>{{ uploadedSchema.schema.database }}</strong> 
+              has been uploaded and is ready for use.
+            </p>
+            
+            <!-- Schema Info -->
+            <div class="schema-summary">
+              <div class="summary-item">
+                <lucide-icon name="database" [size]="16"></lucide-icon>
+                <span>Database: {{ uploadedSchema.schema.database }}</span>
+              </div>
+              <div class="summary-item">
+                <lucide-icon name="layers" [size]="16"></lucide-icon>
+                <span>Collections: {{ uploadedSchema.schema.collections.length }}</span>
+              </div>
+              <div class="summary-item">
+                <lucide-icon name="tag" [size]="16"></lucide-icon>
+                <span>Version: {{ uploadedSchema.version }}</span>
+              </div>
+              <div class="summary-item">
+                <lucide-icon name="circle-alert" [size]="16"></lucide-icon>
+                <span>Status: {{ uploadedSchema.status }}</span>
+              </div>
+            </div>
+
+            <!-- Warnings -->
+            <div class="upload-warnings" *ngIf="uploadedSchema.warnings.length > 0">
+              <h4 class="warnings-title">
+                <lucide-icon name="triangle-alert" [size]="16"></lucide-icon>
+                Warnings
+              </h4>
+              <ul class="warnings-list">
+                <li *ngFor="let warning of uploadedSchema.warnings">{{ warning }}</li>
+              </ul>
+            </div>
+
+            <!-- Actions -->
+            <div class="success-actions">
+              <button 
+                class="secondary-btn"
+                (click)="resetUpload()">
+                Upload Another
+              </button>
+              <a routerLink="../schemas" class="primary-btn">
+                <lucide-icon name="list" [size]="16"></lucide-icon>
+                View All Schemas
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Upload Error -->
+        <div class="upload-error" *ngIf="uploadError">
+          <div class="error-content">
+            <div class="error-icon">
+              <lucide-icon name="circle-x" [size]="48" class="text-red-500"></lucide-icon>
+            </div>
+            <h3 class="error-title">Upload Failed</h3>
+            <p class="error-description">{{ uploadError }}</p>
+            <div class="error-actions">
+              <button 
+                class="retry-btn"
+                (click)="uploadFile()"
+                *ngIf="selectedFile">
+                <lucide-icon name="refresh-cw" [size]="16"></lucide-icon>
+                Retry Upload
+              </button>
+              <button 
+                class="reset-btn"
+                (click)="resetUpload()">
+                Start Over
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sample Schema -->
+      <div class="sample-schema">
+        <h3 class="sample-title">
+          <lucide-icon name="file-json" [size]="20"></lucide-icon>
+          Sample Schema Format
+        </h3>
+        <div class="sample-code">
+          <pre>{{sampleSchema}}</pre>
+        </div>
+        <p class="sample-note">
+          <lucide-icon name="info" [size]="14"></lucide-icon>
+          This is a simplified example. Your actual schema should include all collections and fields.
+        </p>
+      </div>
+    </div>

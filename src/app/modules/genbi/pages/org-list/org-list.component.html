@@ -1,0 +1,271 @@
+<div class="org-list-page">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Organisations</h1>
+      <p class="page-subtitle">Manage organisations and their database configurations</p>
+    </div>
+  </div>
+
+  <!-- Stats Grid -->
+  @if (stats()) {
+    <div class="stats-grid" role="region" aria-label="Organisation statistics">
+      <div class="stat-card">
+        <div class="stat-icon stat-icon--blue">
+          <lucide-icon name="building-2" [size]="24"></lucide-icon>
+        </div>
+        <div class="stat-content">
+          <div class="stat-value">{{ stats()!.total_organizations }}</div>
+          <div class="stat-label">Total Organisations</div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon stat-icon--green">
+          <lucide-icon name="circle-check" [size]="24"></lucide-icon>
+        </div>
+        <div class="stat-content">
+          <div class="stat-value stat-value--green">{{ stats()!.active_organizations }}</div>
+          <div class="stat-label">Active</div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon stat-icon--gray">
+          <lucide-icon name="circle-x" [size]="24"></lucide-icon>
+        </div>
+        <div class="stat-content">
+          <div class="stat-value">{{ stats()!.inactive_organizations }}</div>
+          <div class="stat-label">Inactive</div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon stat-icon--purple">
+          <lucide-icon name="database" [size]="24"></lucide-icon>
+        </div>
+        <div class="stat-content">
+          <div class="stat-value stat-value--purple">{{ stats()!.total_databases }}</div>
+          <div class="stat-label">Total Databases</div>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <div class="search-wrapper">
+      <lucide-icon name="search" [size]="16" aria-hidden="true"></lucide-icon>
+      <input
+        type="search"
+        class="search-input"
+        placeholder="Search by name, slug or email…"
+        [value]="searchTerm()"
+        (input)="onSearch($event)"
+        aria-label="Search organisations"
+      />
+    </div>
+    <button
+      type="button"
+      class="btn btn--primary"
+      (click)="toggleCreateForm()"
+      [attr.aria-expanded]="showCreateForm()"
+    >
+      <lucide-icon name="plus" [size]="16" aria-hidden="true"></lucide-icon>
+      New Organisation
+    </button>
+  </div>
+
+  <!-- Create Form Panel -->
+  @if (showCreateForm()) {
+    <div class="panel" role="region" aria-label="Create organisation">
+      <div class="panel__header">
+        <h2 class="panel__title">New Organisation</h2>
+        <button type="button" class="btn-icon" (click)="toggleCreateForm()" aria-label="Close">
+          <lucide-icon name="x" [size]="18"></lucide-icon>
+        </button>
+      </div>
+
+      @if (createError()) {
+        <div class="alert alert--error" role="alert">{{ createError() }}</div>
+      }
+
+      <form [formGroup]="createForm" (ngSubmit)="onCreateSubmit()" novalidate>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="org-name" class="form-label">Name <span class="required" aria-hidden="true">*</span></label>
+            <input
+              id="org-name"
+              type="text"
+              class="form-input"
+              formControlName="name"
+              autocomplete="organization"
+              aria-required="true"
+              [class.form-input--error]="createForm.get('name')!.invalid && createForm.get('name')!.touched"
+            />
+            @if (createForm.get('name')!.invalid && createForm.get('name')!.touched) {
+              <span class="form-error" role="alert">Name is required</span>
+            }
+          </div>
+
+          <div class="form-group">
+            <label for="org-slug" class="form-label">Slug <span class="required" aria-hidden="true">*</span></label>
+            <input
+              id="org-slug"
+              type="text"
+              class="form-input"
+              formControlName="slug"
+              placeholder="my-org"
+              aria-required="true"
+              [class.form-input--error]="createForm.get('slug')!.invalid && createForm.get('slug')!.touched"
+            />
+            @if (createForm.get('slug')!.errors?.['required'] && createForm.get('slug')!.touched) {
+              <span class="form-error" role="alert">Slug is required</span>
+            }
+            @if (createForm.get('slug')!.errors?.['pattern'] && createForm.get('slug')!.touched) {
+              <span class="form-error" role="alert">Only lowercase letters, numbers and hyphens</span>
+            }
+          </div>
+
+          <div class="form-group">
+            <label for="org-email" class="form-label">Admin Email</label>
+            <input
+              id="org-email"
+              type="email"
+              class="form-input"
+              formControlName="admin_email"
+              autocomplete="email"
+              [class.form-input--error]="createForm.get('admin_email')!.invalid && createForm.get('admin_email')!.touched"
+            />
+            @if (createForm.get('admin_email')!.invalid && createForm.get('admin_email')!.touched) {
+              <span class="form-error" role="alert">Enter a valid email</span>
+            }
+          </div>
+
+          <div class="form-group">
+            <label for="org-desc" class="form-label">Description</label>
+            <input id="org-desc" type="text" class="form-input" formControlName="description" />
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn--ghost" (click)="toggleCreateForm()">Cancel</button>
+          <button type="submit" class="btn btn--primary" [disabled]="saving()">
+            @if (saving()) {
+              <lucide-icon name="loader-circle" [size]="14" aria-hidden="true" class="spin"></lucide-icon>
+              Creating…
+            } @else {
+              Create Organisation
+            }
+          </button>
+        </div>
+      </form>
+    </div>
+  }
+
+  <!-- Loading -->
+  @if (loading()) {
+    <div class="loading-overlay" role="status" aria-live="polite">
+      <div class="loading-spinner"></div>
+      <p class="loading-text">Loading organisations…</p>
+    </div>
+  }
+
+  <!-- Org Grid -->
+  @if (!loading()) {
+    @if (filteredOrgs().length === 0) {
+      <div class="empty-state">
+        <div class="empty-icon">
+          <lucide-icon name="building-2" [size]="48"></lucide-icon>
+        </div>
+        <h3 class="empty-title">No organisations found</h3>
+        <p class="empty-description">
+          @if (searchTerm()) {
+            Try a different search term.
+          } @else {
+            Create your first organisation using the button above.
+          }
+        </p>
+      </div>
+    } @else {
+      <div class="org-grid">
+        @for (org of filteredOrgs(); track org._id) {
+          <div class="org-card">
+
+            <!-- Card Top Bar -->
+            <div class="org-card__top">
+              <div class="org-avatar" [class.org-avatar--active]="org.is_active" [class.org-avatar--inactive]="!org.is_active">
+                {{ org.name.charAt(0).toUpperCase() }}
+              </div>
+              <span
+                class="status-badge"
+                [class.status-badge--active]="org.is_active"
+                [class.status-badge--inactive]="!org.is_active"
+              >
+                <span class="status-dot" [class.status-dot--active]="org.is_active" [class.status-dot--inactive]="!org.is_active"></span>
+                {{ org.is_active ? 'Active' : 'Inactive' }}
+              </span>
+            </div>
+
+            <!-- Card Body -->
+            <div class="org-card__body">
+              <h3 class="org-card__name">{{ org.name }}</h3>
+              <code class="org-card__slug">{{ org.slug }}</code>
+              @if (org.description) {
+                <p class="org-card__desc">{{ org.description }}</p>
+              }
+            </div>
+
+            <!-- Meta -->
+            <dl class="org-card__meta">
+              @if (org.admin_email) {
+                <div class="meta-row">
+                  <lucide-icon name="mail" [size]="13" aria-hidden="true"></lucide-icon>
+                  <dd>{{ org.admin_email }}</dd>
+                </div>
+              }
+              <div class="meta-row">
+                <lucide-icon name="database" [size]="13" aria-hidden="true"></lucide-icon>
+                <dd>{{ dbCount(org) }} database{{ dbCount(org) !== 1 ? 's' : '' }}</dd>
+              </div>
+              <div class="meta-row">
+                <lucide-icon name="calendar" [size]="13" aria-hidden="true"></lucide-icon>
+                <dd>{{ formatDate(org.created_at) }}</dd>
+              </div>
+            </dl>
+
+            <!-- Actions -->
+            <div class="org-card__actions">
+              <button
+                type="button"
+                class="btn btn--outline btn--sm"
+                (click)="navigateToDetail(org)"
+                [attr.aria-label]="'Manage ' + org.name"
+              >
+                <lucide-icon name="pencil" [size]="13" aria-hidden="true"></lucide-icon>
+                Manage
+              </button>
+              <button
+                type="button"
+                class="btn btn--danger btn--sm"
+                (click)="deleteOrg(org)"
+                [disabled]="deletingId() === org._id"
+                [attr.aria-label]="'Delete ' + org.name"
+              >
+                @if (deletingId() === org._id) {
+                  <lucide-icon name="loader-circle" [size]="13" class="spin" aria-hidden="true"></lucide-icon>
+                } @else {
+                  <lucide-icon name="trash-2" [size]="13" aria-hidden="true"></lucide-icon>
+                }
+                Delete
+              </button>
+            </div>
+
+          </div>
+        }
+      </div>
+    }
+  }
+
+</div>
