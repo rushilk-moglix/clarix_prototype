@@ -227,7 +227,7 @@
             aria-valuemax="100"
             [attr.aria-label]="item.direction + ': ' + pct(item.count, totalDirection()) + '%'">
             <div class="dist-fill" [style.width.%]="pct(item.count, totalDirection())"
-              [style.background-color]="item.direction === 'inbound' ? '#3b82f6' : '#8b5cf6'">
+              [style.background-color]="item.direction === 'inbound' ? 'var(--ds-info)' : 'var(--ds-accent)'">
             </div>
           </div>
         </div>

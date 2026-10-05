@@ -377,3 +377,27 @@ lucide-icon svg {
 .dark .border-gray-100, .dark .border-gray-200, .dark .border-gray-300, .dark .dark\:border-gray-700, .dark .dark\:border-gray-600 { border-color: var(--ds-border); }
 .bg-white { background-color: var(--ds-surface); }
 .border-gray-200, .border-gray-100 { border-color: var(--ds-border); }
+
+/* ============================================================================
+   Neo-minimal layer (Oct 2026), the same rules as Echo's styles.css layer:
+   white and black pages, Cloud Dancer wells, hairline cards, mono micro labels,
+   big tabular numbers, status dots, small physical feedback.
+   ========================================================================== */
+body { background: var(--ds-bg); color: var(--ds-text); font-family: var(--ds-font); letter-spacing: -0.006em; }
+.page-title { font-size: 26px !important; font-weight: 650 !important; letter-spacing: -0.035em !important; line-height: 1.15; color: var(--ds-text); }
+.section-title, .chart-title, .card__title {
+  font-family: var(--ds-mono); font-size: 11px !important; font-weight: 500 !important; letter-spacing: 0.07em; text-transform: uppercase; color: var(--ds-text-muted) !important;
+}
+.modal-title { font-size: 16px; font-weight: 650; letter-spacing: -0.02em; }
+/* Tailwind card utilities become flat hairline cards. */
+.shadow-sm, .shadow, .shadow-md { box-shadow: none !important; }
+.rounded-xl, .rounded-2xl { border-radius: var(--ds-r-lg) !important; }
+.empty-title { color: var(--ds-text); font-weight: 600; }
+@keyframes dsLift { from { opacity: 0; transform: translateY(4px) scale(.985); } to { opacity: 1; transform: none; } }
+[role="dialog"], .modal, .modal-content { animation: dsLift .18s var(--ds-ease) both; }
+/* Accent text utilities: the deep violet is for light pages; on black they use the lighter accent text. */
+.dark .text-primary-600, .dark .text-primary-700, .dark .text-indigo-600, .dark .text-indigo-700, .dark .text-blue-600, .dark .text-blue-700 { color: var(--ds-accent-fg) !important; }
+.dark .bg-blue-600, .dark .bg-indigo-600, .dark .bg-primary-600 { background-color: var(--ds-accent) !important; }
+.bg-blue-600, .bg-indigo-600 { background-color: var(--ds-accent); }
+.hover\:bg-blue-700:hover { background-color: var(--ds-accent-hover); }
+.text-blue-600 { color: var(--ds-accent-fg); }

@@ -153,10 +153,10 @@
   color: var(--ds-on-accent);
   flex-shrink: 0;
 
-  &.tone-success { --dot-color: #2e7d57; background: var(--dot-color); }
-  &.tone-failed { --dot-color: #d9232d; background: var(--dot-color); }
-  &.tone-retrying { --dot-color: #c77a12; background: var(--dot-color); }
-  &.tone-pending { --dot-color: #6b645b; background: var(--dot-color); }
+  &.tone-success { --dot-color: var(--ds-success); background: var(--dot-color); }
+  &.tone-failed { --dot-color: var(--ds-danger); background: var(--dot-color); }
+  &.tone-retrying { --dot-color: var(--ds-warning); background: var(--dot-color); }
+  &.tone-pending { --dot-color: var(--ds-text-muted); background: var(--dot-color); }
 
   /* Newest event: a pulsing ring in the dot's own colour draws the eye to it. */
   &--latest {

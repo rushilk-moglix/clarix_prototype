@@ -76,15 +76,15 @@ export class DashboardOverviewComponent {
 
   protected statusColor(status: string): string {
     const colors: Record<string, string> = {
-      COMPLETED:   '#10b981',
-      FAILED:      '#ef4444',
-      IN_PROGRESS: '#3b82f6',
-      INITIATED:   '#8b5cf6',
-      NO_ANSWER:   '#f59e0b',
-      BUSY:        '#f97316',
-      VOICEMAIL:   '#6b645b',
+      COMPLETED:   'var(--ds-success)',
+      FAILED:      'var(--ds-danger)',
+      IN_PROGRESS: 'var(--ds-accent)',
+      INITIATED:   'var(--ds-info)',
+      NO_ANSWER:   'var(--ds-warning)',
+      BUSY:        'var(--ds-warning-fg)',
+      VOICEMAIL:   'var(--ds-text-disabled)',
     };
-    return colors[status] ?? '#6b645b';
+    return colors[status] ?? 'var(--ds-text-disabled)';
   }
 
   protected pct(count: number, total: number): number {

@@ -11,7 +11,7 @@
   transition: margin-left 0.2s cubic-bezier(0.2, 0.7, 0.1, 1);
 }
 
-/* Header: flat paper strip with a hairline. Mono eyebrow says the section,
+/* Header: a translucent white (or black) strip with a hairline. Mono eyebrow says the section,
    the page name sits beside it; page tabs (if any) follow; two tools right. */
 .hd {
   position: sticky;
@@ -22,8 +22,9 @@
   align-items: center;
   gap: 18px;
   padding: 0 20px;
-  background: var(--bg-secondary);
-  border-bottom: 1px solid var(--border-color);
+  background: color-mix(in srgb, var(--ds-bg) 86%, transparent);
+  backdrop-filter: blur(10px) saturate(1.4);
+  border-bottom: 1px solid var(--ds-border);
 }
 
 .hd-where { display: flex; align-items: baseline; gap: 12px; min-width: 0; }
@@ -32,9 +33,9 @@
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  font-family: 'IBM Plex Mono', ui-monospace, monospace;
-  font-size: 10.5px;
-  letter-spacing: 0.16em;
+  font-family: var(--ds-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--text-muted);
   white-space: nowrap;

@@ -201,7 +201,7 @@
   height: 7px;
   border-radius: 999px;
   overflow: hidden;
-  background: var(--surface-hover, #eef0f3);
+  background: var(--ds-hover);
 }
 
 .es__seg {
@@ -339,14 +339,14 @@
   vertical-align: middle;
   font-size: 12px;
   font-weight: 600;
-  border: 1px solid #fda4af;
+  border: 1px solid var(--ds-danger-border);
   border-radius: 6px;
-  background: #fff1f2;
-  color: #be123c;
+  background: var(--ds-danger-bg);
+  color: var(--ds-danger-fg);
   cursor: pointer;
 
   &:hover:not(:disabled) {
-    background: #ffe4e6;
+    background: var(--ds-danger-bg);
   }
 
   &:disabled {

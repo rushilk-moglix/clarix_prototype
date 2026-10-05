@@ -32,6 +32,11 @@ npm run start:local      # mock backend + dev server, same data as the demo
 npm run build:demo       # the static demo, as deployed (output: dist/demo/browser)
 ```
 
+## Design system
+
+Colours, type, components, motion and the checks before merging: `docs/DESIGN-SYSTEM.md`. Paste `docs/ui-audit.js` into the
+browser console to check contrast, clipped text and sideways scroll on any page.
+
 ## Deploy
 
 Every push to `main` runs `.github/workflows/pages.yml`: `npm ci`, `npm run build:demo`, then GitHub Pages.

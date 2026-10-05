@@ -195,7 +195,7 @@
   padding: 8px 14px;
   font-size: 13px;
   font-weight: 500;
-  border: 1px solid #ddd6fe;
+  border: 1px solid var(--ds-info-border);
   border-radius: 8px;
   background: var(--ds-accent-soft);
   color: var(--primary, var(--ds-accent-fg));
@@ -321,9 +321,9 @@
   gap: 12px;
   padding: 14px 16px;
   margin-bottom: 16px;
-  border: 1px solid #fed7aa;
+  border: 1px solid var(--ds-warning-border);
   border-radius: 12px;
-  background: linear-gradient(180deg, #fff7ed 0%, #fffbf7 100%);
+  background: var(--ds-warning-bg);
   box-shadow: inset 3px 0 0 0 var(--ds-warning);
 }
 
@@ -335,7 +335,7 @@
   width: 36px;
   height: 36px;
   border-radius: 10px;
-  background: #ffedd5;
+  background: var(--ds-warning-bg);
   color: var(--ds-warning-fg);
 }
 
@@ -346,13 +346,13 @@
 .erf__next-line {
   margin: 0;
   font-size: 14px;
-  color: #7c2d12;
+  color: var(--ds-warning-fg);
 }
 
 .erf__next-countdown {
   font-weight: 700;
   font-variant-numeric: tabular-nums; // digits don't jitter as the seconds tick
-  color: #9a3412;
+  color: var(--ds-warning-fg);
 }
 
 .erf__next-meta {
@@ -423,7 +423,7 @@
   white-space: nowrap;
 
   &--to {
-    color: #312e81;
+    color: var(--ds-info-fg);
   }
 
   &--cc {
@@ -449,7 +449,7 @@
   }
 
   &--cc {
-    background: #eef2f6;
+    background: var(--ds-surface-sunken);
     color: var(--ds-text-muted);
   }
 }

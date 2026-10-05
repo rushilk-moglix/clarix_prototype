@@ -45,12 +45,12 @@ interface BarChartOptions {
 }
 
 const PALETTE = {
-  positive: '#2e7d57',
-  negative: '#d9232d',
-  neutral:  '#a8a094',
-  blue:     '#3d33a0',
-  primary:  '#3d33a0',
-  warning:  '#c77a12',
+  positive: '#16a34a',
+  negative: '#dc2626',
+  neutral:  '#a8a29e',
+  blue:     '#6a5fc1',
+  primary:  '#6a5fc1',
+  warning:  '#e28a0b',
 };
 
 @Component({

@@ -3,9 +3,9 @@
    ================================= */
 
 :root {
-  /* Clarix accent over the shared Cognilix tokens (ds-tokens.css): violet. */
-  --ds-accent: #3d33a0; --ds-accent-hover: #2c2480; --ds-accent-fg: #3d33a0;
-  --ds-accent-soft: #eeedfa; --ds-accent-border: #cfcbf1; --ds-on-accent: #ffffff; --ds-focus: #3d33a0;
+  /* Clarix accent over the shared Cognilix tokens (ds-tokens.css): PANTONE 7672 C violet (#4C4184). */
+  --ds-accent: #4c4184; --ds-accent-hover: #3a3168; --ds-accent-fg: #4c4184;
+  --ds-accent-soft: #f1f0f8; --ds-accent-border: #d3cfe8; --ds-on-accent: #ffffff; --ds-focus: #4c4184;
 
   /* Older names used across Clarix, now pointing at semantic tokens so light and dark come from one place. */
   --primary-color: var(--ds-accent);
@@ -84,8 +84,8 @@
 /* Dark: the surfaces and text flip inside ds-tokens.css; only the accent is set here. */
 .dark {
   /* Buttons keep white text on violet in both themes; violet used as text on dark surfaces is the lighter accent-fg. */
-  --ds-accent: #6b62d6; --ds-accent-hover: #5a51c0; --ds-accent-fg: #b3adff;
-  --ds-accent-soft: rgba(172, 166, 255, 0.14); --ds-accent-border: rgba(172, 166, 255, 0.34); --ds-on-accent: #ffffff; --ds-focus: #b3adff;
+  --ds-accent: #6a5fc1; --ds-accent-hover: #7b71d0; --ds-accent-fg: #bcb5f5;
+  --ds-accent-soft: rgba(124, 113, 208, 0.16); --ds-accent-border: rgba(150, 140, 230, 0.38); --ds-on-accent: #ffffff; --ds-focus: #bcb5f5;
 }
 
 /* Semi Dark Mode (Sidebar & Header) */

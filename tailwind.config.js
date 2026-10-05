@@ -5,16 +5,16 @@ module.exports = {
   ],
   theme: {
     extend: {
-      // Warm paper greys and Clarix violet, so every utility class follows the new palette.
+      // Stone greys that sit with Cloud Dancer, and Clarix violet (PANTONE 7672 C), so every utility class follows the new palette.
       colors: {
-        gray: { 50: '#faf8f4', 100: '#f4f2ec', 200: '#e3dfd5', 300: '#d2ccbf', 400: '#a8a094', 500: '#7d756a', 600: '#5e5850', 700: '#4a4540', 800: '#29241f', 900: '#1c1a17', 950: '#11100f' },
-        slate: { 50: '#faf8f4', 100: '#f4f2ec', 200: '#e3dfd5', 300: '#d2ccbf', 400: '#a8a094', 500: '#7d756a', 600: '#5e5850', 700: '#4a4540', 800: '#29241f', 900: '#1c1a17', 950: '#11100f' },
-        indigo: { 50: '#f1f0fb', 100: '#e4e2f7', 200: '#c9c5ef', 300: '#a39de3', 400: '#7e76d4', 500: '#5a51c0', 600: '#3d33a0', 700: '#322a86', 800: '#28226b', 900: '#1f1a52', 950: '#130f33' },
-        primary: { 50: '#f1f0fb', 100: '#e4e2f7', 200: '#c9c5ef', 300: '#a39de3', 400: '#7e76d4', 500: '#5a51c0', 600: '#3d33a0', 700: '#322a86', 800: '#28226b', 900: '#1f1a52', 950: '#130f33' },
+        gray: { 50: '#fafaf9', 100: '#f5f5f4', 200: '#e7e5e2', 300: '#d6d3cf', 400: '#a8a29e', 500: '#78716c', 600: '#57534e', 700: '#44403c', 800: '#292524', 900: '#1c1917', 950: '#0c0a09' },
+        slate: { 50: '#fafaf9', 100: '#f5f5f4', 200: '#e7e5e2', 300: '#d6d3cf', 400: '#a8a29e', 500: '#78716c', 600: '#57534e', 700: '#44403c', 800: '#292524', 900: '#1c1917', 950: '#0c0a09' },
+        indigo: { 50: '#f1f0f8', 100: '#e3e0f1', 200: '#c8c2e3', 300: '#a69dd0', 400: '#8478bd', 500: '#6a5fc1', 600: '#4c4184', 700: '#3a3168', 800: '#2c2550', 900: '#1f1a3a', 950: '#120f24' },
+        primary: { 50: '#f1f0f8', 100: '#e3e0f1', 200: '#c8c2e3', 300: '#a69dd0', 400: '#8478bd', 500: '#6a5fc1', 600: '#4c4184', 700: '#3a3168', 800: '#2c2550', 900: '#1f1a3a', 950: '#120f24' },
       },
       fontFamily: {
-        'sans': ['Archivo', 'system-ui', '-apple-system', 'sans-serif'],
-        'mono': ['IBM Plex Mono', 'ui-monospace', 'Menlo', 'monospace'],
+        'sans': ['Geist', 'system-ui', '-apple-system', 'sans-serif'],
+        'mono': ['Geist Mono', 'ui-monospace', 'Menlo', 'monospace'],
       },
     },
   },

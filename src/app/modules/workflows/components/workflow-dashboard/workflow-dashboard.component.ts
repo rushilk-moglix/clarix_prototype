@@ -33,18 +33,18 @@ import { DashboardKpiCardComponent } from '../dashboard-kpi-card/dashboard-kpi-c
 import { DynamicFieldChartComponent } from '../dynamic-field-chart/dynamic-field-chart.component';
 
 const STATUS_COLORS: Record<string, string> = {
-  COMPLETED: '#2e7d57',
-  ACTIVE: '#3d33a0',
-  IN_PROGRESS: '#3d33a0',
-  WAITING: '#c77a12',
-  PAUSED: '#c77a12',
-  FAILED: '#d9232d',
-  CANCELLED: '#a8a094',
-  DRAFT: '#a8a094',
+  COMPLETED: '#16a34a',
+  ACTIVE: '#6a5fc1',
+  IN_PROGRESS: '#6a5fc1',
+  WAITING: '#e28a0b',
+  PAUSED: '#e28a0b',
+  FAILED: '#dc2626',
+  CANCELLED: '#a8a29e',
+  DRAFT: '#a8a29e',
 };
 
 /** One hue for the duration histogram: the bins are ordered, so colour carries no information. */
-const DURATION_COLOR = '#3d33a0';
+const DURATION_COLOR = '#6a5fc1';
 
 @Component({
   selector: 'app-workflow-dashboard',
@@ -119,7 +119,7 @@ export class WorkflowDashboardComponent {
     const breakdown = this.data()?.statusBreakdown ?? [];
     const series = breakdown.map((b) => b.count);
     const labels = breakdown.map((b) => b.key ?? '—');
-    const colors = labels.map((l) => STATUS_COLORS[l] ?? '#a8a094');
+    const colors = labels.map((l) => STATUS_COLORS[l] ?? '#a8a29e');
     return {
       series,
       labels,
@@ -216,7 +216,7 @@ export class WorkflowDashboardComponent {
       chart: { type: 'area', height: 260, toolbar: { show: false }, fontFamily: 'inherit' },
       xaxis: { categories, labels: { style: { fontSize: '11px' }, rotate: -35, hideOverlappingLabels: true } },
       yaxis: { labels: { style: { fontSize: '11px' } } },
-      colors: ['#3d33a0', '#2e7d57', '#d9232d'],
+      colors: ['#6a5fc1', '#16a34a', '#dc2626'],
       stroke: { curve: 'smooth', width: 2 },
       dataLabels: { enabled: false },
       legend: { position: 'top', fontSize: '12px' },
