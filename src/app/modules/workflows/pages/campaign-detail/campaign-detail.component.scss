@@ -342,3 +342,6 @@
 .cd-oz { font-family: var(--ds-mono); font-size: 10.5px; color: var(--text-muted); margin-top: 2px; }
 
 .cd-nowrap { white-space: nowrap; }
+
+.cd-state[data-state='paused'] { background: var(--ds-info-bg); color: var(--ds-info-fg); }
+.cd-state[data-state='failed'] { background: var(--ds-danger-bg); color: var(--ds-danger-fg); }

@@ -317,7 +317,9 @@ function orgSummary() {
   const finished = completed + count('FAILED') + count('CANCELLED') + count('STOPPED');
   const running = new Set(executions.filter((e) => e.status === 'IN_PROGRESS' && e.batchId).map((e) => e.batchId)).size;
   return {
-    agentsLive: templates.filter((t) => t.status === 'ACTIVE').length, campaignsRunning: running, callsPlaced: executions.length,
+    agentsLive: templates.filter((t) => t.status === 'ACTIVE').length, campaignsRunning: running,
+    // Placed = Echo dialled it at least once (has a dial in its log); queued, cancelled and invalid rows are not calls.
+    callsPlaced: executions.filter((e) => (e.attemptLog?.length || 0) > 0 || (!e.callStatus && e.status !== 'IN_PROGRESS' && e.status !== 'CANCELLED' && e.status !== 'STOPPED')).length,
     answeredPct: finished ? Math.round((completed * 100) / finished) : 0,
     // Live heuristic: a completed run whose extractedFields exists, even when it is empty.
     commitments: executions.filter((e) => e.status === 'COMPLETED' && e.extractedFields != null).length,
@@ -476,6 +478,9 @@ function exchangeWebhook(body) {
     providerStatus: body.provider ?? e.providerStatus ?? null, lastAttemptStatus: body.last_attempt_status ?? null, lastAttemptReason: body.last_attempt_reason ?? null,
   });
   if (body.outcome) Object.assign(e, { outcome: body.outcome, outcomeGroup: body.outcome_group || OUTCOMES[body.outcome]?.group || null });
+  // Echo owns the campaign status; Clarix stores the latest one it sent and never works it out itself.
+  const sheetOf = sheets.find((s) => s.id === e.batchId);
+  if (sheetOf && body.campaign_status && (!sheetOf.echoVersion || (body.version || 0) >= sheetOf.echoVersion)) Object.assign(sheetOf, { campaignStatus: body.campaign_status, echoVersion: body.version || Date.now() });
   // Echo sends the whole dial history with every event; keep the latest copy.
   if (Array.isArray(body.attempt_log)) e.attemptLog = body.attempt_log;
   const conv = conversations.get(e.activeConversationId);
@@ -534,7 +539,13 @@ on('GET', '/api/v1/workflows/sheets', ({ q }) => {
   ok(page(l, q), l.length);
 });
 on('GET', '/api/v1/workflows/sheets/:id', ({ p }) => { const s = sheets.find((x) => x.id === p.id); s ? ok(sheetView(s)) : fail(404, `Sheet not found: ${p.id}`); });
-on('POST', '/api/v1/workflows/sheets/:id/stop', ({ p }) => {
+on('POST', '/api/v1/workflows/sheets/:id/stop', async ({ p }) => {
+  const mine = R;
+  try {
+    const r = await fetch(`${ECHO_URL}/__mock/clarix-stop`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ batchId: p.id }) });
+    if (r.ok) { const j = await r.json(); R = mine; return ok(j.stopped); }
+  } catch { /* Echo mock not running */ }
+  R = mine;
   const live = executions.filter((e) => e.batchId === p.id && e.status === 'IN_PROGRESS');
   live.forEach((e) => finishExecution(e, 'STOPPED', { by: USER }));
   ok(live.length);
@@ -566,7 +577,7 @@ on('POST', '/api/v1/workflows/trigger/bulk', async ({ req, raw }) => {
     results.push({ row: i + 2, status: 'ACCEPTED', reason: '' });
   });
   sheet.failed = sheet.failedRows.length; sheet.triggered = toEcho.length;
-  sheets.push(sheet);
+  if (toEcho.length) sheets.push(sheet);
   const mine = R; // another request may run while we wait on the Echo mock
   if (toEcho.length) await dispatchToEcho(t, sheet, toEcho);
   R = mine;
@@ -628,7 +639,7 @@ on('GET', '/api/v1/workflow-templates/:id/agent-schema', ({ p }) => {
 
 // Call providers
 on('GET', '/api/v1/call-providers', () => ok(PROVIDERS));
-on('GET', '/api/v1/call-providers/:key/campaigns', ({ p }) => ok(p.key === 'exchange' ? S.agents.map((a) => ({ id: a.key, name: a.label, description: a.description || '' })) : []));
+on('GET', '/api/v1/call-providers/:key/campaigns', ({ p }) => ok(p.key === 'exchange' ? [...new Map([...S.agents.map((a) => [a.key, a]), ...[...agentRecords.values()].map((r) => [r.agentId, { key: r.agentId, label: r.agentName, description: r.description }])]).values()].map((a) => ({ id: a.key, name: a.label, description: a.description || '' })) : []));
 on('GET', '/api/v1/call-providers/:key/campaigns/:cid', ({ p }) => {
   const a = agentByKey(p.cid); if (!a) return fail(404, 'Campaign not found');
   ok({ id: a.key, name: a.label, description: a.description || '', inputFields: a.input_variables.map((v) => ({ name: v.key, type: v.type })), outputFields: a.output_variables.map((v) => ({ name: v.key, type: v.type })) });
@@ -662,6 +673,12 @@ function applyAgentToTemplate(t, rec) {
 }
 on('POST', '/public/webhooks/exchange/agents', ({ body }) => {
   if (!body.id) return fail(400, 'Agent push is missing id');
+  if (body.deleted) {
+    agentRecords.delete(body.id);
+    const hit = templates.filter((t) => t.providerAgentId === body.id);
+    hit.forEach((t) => Object.assign(t, { status: 'ARCHIVED', archivedReason: 'Agent deleted in Echo', updatedAt: nowIso() }));
+    return ok({ archived: hit.length });
+  }
   const rec = {
     agentId: body.id, agentName: body.name, description: body.description || '', voice: body.voice || '', direction: body.direction || 'outbound',
     ozonetelCampaign: body.ozonetel_campaign || '', syncedAt: nowIso(),

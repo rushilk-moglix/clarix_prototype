@@ -23,6 +23,8 @@ export interface ExecutionSheet {
   inProgressCount?: number;
   /** Live execution counts keyed by WorkflowStatus name (COMPLETED, IN_PROGRESS, FAILED, …). */
   statusCounts?: Record<string, number>;
+  /** Echo's campaign status, as sent with every update (Echo is the source of truth). */
+  campaignStatus?: string | null;
   /** Calls per Echo outcome group (reached, not_reached, failed, in_progress, not_dialled). */
   outcomeGroups?: Record<string, number>;
   /** First dial to the end of the last call; grows while calls are open. */

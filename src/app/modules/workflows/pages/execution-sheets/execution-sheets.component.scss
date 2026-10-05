@@ -463,3 +463,6 @@
 }
 .es__campaign { min-width: 190px; }
 .es__table td:nth-child(2) { min-width: 130px; }
+
+.es__state-chip[data-state='paused'] { background: var(--ds-info-bg); color: var(--ds-info-fg); }
+.es__state-chip[data-state='failed'] { background: var(--ds-danger-bg); color: var(--ds-danger-fg); }

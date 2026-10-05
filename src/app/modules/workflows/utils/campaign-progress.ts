@@ -11,6 +11,8 @@ export interface CampaignProgress {
   pctInProgress: number;
   pctStopped: number;
   pctFailed: number;
+  /** Echo's campaign status as sent (READY, RUNNING, PAUSED, COMPLETED, PARTIALLY_COMPLETED, CANCELLED, FAILED). */
+  echoStatus?: string | null;
 }
 
 /**
@@ -19,7 +21,15 @@ export interface CampaignProgress {
  * both places.
  */
 /** One plain status for a campaign, from its progress. Never "Completed" while calls are still open. */
-export function campaignState(c: CampaignProgress | undefined): { label: string; cls: 'live' | 'done' | 'partial' | 'stopped' | 'idle' } {
+const ECHO_STATES: Record<string, { label: string; cls: 'live' | 'done' | 'partial' | 'stopped' | 'idle' | 'paused' | 'failed' }> = {
+  READY: { label: 'Ready', cls: 'idle' }, RUNNING: { label: 'Running', cls: 'live' }, PAUSED: { label: 'Paused', cls: 'paused' },
+  COMPLETED: { label: 'Completed', cls: 'done' }, PARTIALLY_COMPLETED: { label: 'Partially completed', cls: 'partial' },
+  CANCELLED: { label: 'Cancelled', cls: 'stopped' }, FAILED: { label: 'Failed', cls: 'failed' },
+};
+/** Echo is the source of truth: its campaign status wins. The roll-up below only covers campaigns Echo has not reported on yet. */
+export function campaignState(c: CampaignProgress | undefined): { label: string; cls: 'live' | 'done' | 'partial' | 'stopped' | 'idle' | 'paused' | 'failed' } {
+  const echo = c?.echoStatus ? ECHO_STATES[String(c.echoStatus).toUpperCase()] : undefined;
+  if (echo) return echo;
   if (!c || c.total === 0) return { label: 'Ready', cls: 'idle' };
   if (c.inProgress > 0) return { label: 'Running', cls: 'live' };
   if (c.stopped > 0 && c.completed + c.failed > 0) return { label: 'Partially completed', cls: 'partial' };
@@ -47,5 +57,6 @@ export function buildCampaignProgress(sheet: ExecutionSheet): CampaignProgress {
     pctInProgress: pct(inProgress),
     pctStopped: pct(stopped),
     pctFailed: pct(failed),
+    echoStatus: sheet.campaignStatus ?? null,
   };
 }

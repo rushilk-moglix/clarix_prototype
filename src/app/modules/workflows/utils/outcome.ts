@@ -22,8 +22,9 @@ const WORDS: Record<string, [string, OutcomeGroup, string, string, boolean]> = {
   busy: ['Busy', 'not_reached', 'Line busy or the call was declined', 'Telephony status NotAnswered · customer status Busy', true],
   unreachable: ['Unreachable', 'not_reached', 'Switched off, out of coverage or no route', 'Telephony status NotAnswered · customer status SubcriberAbsent or NoRouteDestination', true],
   wrong_number: ['Wrong number', 'not_reached', 'The number does not exist', 'Customer status InvalidNumber or InvalidNumberFormat, or dial status invalid_number', false],
-  blocked: ['Blocked', 'not_reached', 'DND, international calling off, or barred', 'Customer status ISDDisabled or DND', false],
-  network_error: ['Network error', 'failed', 'The network or provider failed; safe to retry', 'Customer status Congestion or exception, dial status exception, or any value not listed here', true],
+  blocked: ['Blocked', 'not_reached', 'DND or barred by the network', 'Customer status DND or an explicit block from the provider (never guessed from patterns)', false],
+  rejected: ['Rejected', 'not_reached', 'The person or network declined the call', 'An explicit decline from the provider (Ozonetel sends none today)', false],
+  network_error: ['Network error', 'failed', 'The network or provider failed; safe to retry', 'Customer status Congestion, ISDDisabled or exception, or dial status exception. Any value not listed here is logged as unknown and not tried again', true],
   call_dropped: ['Call dropped', 'failed', 'Picked up, but the line or agent dropped; safe to retry', 'Telephony status Answered · agent audio never joined, or hung up by System mid call', true],
   bad_data: ['Bad data', 'not_dialled', 'Failed the data check; not dialled', 'Not sent to the telephony service', false],
   repeated_number: ['Repeated number', 'not_dialled', 'Same number earlier in the sheet', 'Not sent to the telephony service', false],
@@ -80,6 +81,8 @@ export const CAMPAIGN_STATUSES: { key: string; label: string; cls: string; rule:
   { key: 'live', label: 'Running', cls: 'live', rule: 'At least one call is Waiting, Calling, On call or Will retry' },
   { key: 'done', label: 'Completed', cls: 'done', rule: 'Every call has a final call status' },
   { key: 'partial', label: 'Partially completed', cls: 'partial', rule: 'Stopped while some calls were never dialled (call status Stopped)' },
-  { key: 'stopped', label: 'Stopped', cls: 'stopped', rule: 'Stopped before any call was dialled' },
+  { key: 'stopped', label: 'Cancelled', cls: 'stopped', rule: 'Stopped before any call was dialled' },
+  { key: 'paused', label: 'Paused', cls: 'paused', rule: 'Held in Echo; calls not yet placed wait until it is resumed' },
+  { key: 'failed', label: 'Failed', cls: 'failed', rule: 'The campaign itself failed in Echo (for example its calling flow was turned off); not individual call failures' },
 ];
 export function campaignRule(cls: string): string { return CAMPAIGN_STATUSES.find((c) => c.cls === cls)?.rule || ''; }
